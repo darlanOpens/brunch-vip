@@ -1,3 +1,5 @@
+import { withBasePath } from '@/utils/basePath';
+
 const imgBrunchWithFriends20250110035526Utc1 = "/assets/a99f405ac70dce27395d3d63bd4f1c6d926f3403.png";
 const imgInteriorOfAnExclusiveRestaurant20250324053413Utc1 = "/assets/1bac8a2e947ed0fa58bd07ffe7ddf7d31448023a.png";
 const imgCheerfulColleaguesToastingWithWineWhileHavin20241213183654Utc1 = "/assets/8fcfa278d418d8dfb1149f96869b34b09fdd6663.png";
@@ -32,7 +34,7 @@ export default function Gallery() {
               {tile.kind === 'image' ? (
                 <div
                   className="absolute inset-0 bg-center bg-cover"
-                  style={{ backgroundImage: `url('${tile.src}')` }}
+                  style={{ backgroundImage: `url('${withBasePath(tile.src)}')` }}
                   role="img"
                   aria-label={(tile as Extract<Tile, { kind: 'image' }>).alt}
                 />

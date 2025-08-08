@@ -1,42 +1,60 @@
 "use client";
 import { useState } from "react";
 import Image from 'next/image';
-const imgImage1 = "/assets/5cff422875440c9add4bdb28e9892cc5b0241fd1.png";
-const imgCalendarToday = "/assets/798ebcfe4e7d2570319351ba482e4f0733320dbd.svg";
-const imgSchedule = "/assets/f75f5a0a5737e0b27a8464f9b1d9b8fb5dd23477.svg";
-const imgLocationOn = "/assets/7c340c2e8d8da36c55235e6326ca7a5f012d6328.svg";
+import { withBasePath } from '@/utils/basePath';
+import { Button } from "@/components/ui/button";
+import { addUTMToFormData } from "@/lib/utm";
+import { getApiUrl } from "@/lib/url";
+
+const imgImage1 = "brunch-vip/assets/5cff422875440c9add4bdb28e9892cc5b0241fd1.png";
+const imgCalendarToday = "brunch-vip/assets/798ebcfe4e7d2570319351ba482e4f0733320dbd.svg";
+const imgSchedule = "brunch-vip/assets/f75f5a0a5737e0b27a8464f9b1d9b8fb5dd23477.svg";
+const imgLocationOn = "brunch-vip/assets/7c340c2e8d8da36c55235e6326ca7a5f012d6328.svg";
 
 export default function CTA() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  /**
+   * Função para lidar com o submit do formulário de convite
+   */
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
     setMessage(null);
-    const trimmed = email.trim();
-    if (!trimmed) {
-      setMessage("Informe um e-mail válido.");
-      return;
-    }
-    setLoading(true);
+    
     try {
-      const res = await fetch('/api/invite', {
+      const payload = addUTMToFormData({
+        email: email.trim(),
+        form_title: "Brunch VIP",
+        form_id: "Brunch VIP CTA",
+      })
+      const response = await fetch(getApiUrl('/api/lead'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmed }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data?.ok) {
-        setMessage(data?.error || 'Falha ao confirmar convite.');
-      } else {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok && data.success && data.redirectUrl) {
+        window.location.href = data.redirectUrl
+      } else if (response.ok && data?.ok) {
         setMessage('Convite confirmado! Verifique seu e-mail.');
-        setEmail("");
+        setEmail('')
+        setIsSubmitted(true);
+      } else {
+        setMessage(data?.error || 'Falha ao confirmar convite.');
       }
-    } catch (e) {
+    } catch (error) {
+      console.error('Erro:', error)
       setMessage('Erro de rede. Tente novamente.');
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -88,45 +106,47 @@ export default function CTA() {
         </div>
       </div>
       
+      {/* Formulário de inscrição */}
       <div className="w-full px-5 sm:px-6 md:px-0 flex justify-center relative z-20">
-      <form id="invite-cta" onSubmit={handleSubmit} className="w-full max-w-[560px] flex flex-col md:flex-row items-stretch gap-3">
-        <div className="flex-1">
-          <label htmlFor="invite-email" className="sr-only">Email do convite pessoal</label>
-          <div className="bg-white/95 rounded-full shadow-md px-5 py-3 flex items-center focus-within:ring-2 focus-within:ring-white/50">
-            <input
-              id="invite-email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              required
-              placeholder="Email do convite pessoal"
-              className="w-full bg-transparent text-black placeholder-black/60 outline-none text-[16px]"
-              aria-label="Email do convite pessoal"
-              autoComplete="email"
-            />
-          </div>
+        <div className="hero-form w-full max-w-[538px] mx-auto">
+          {!isSubmitted ? (
+            <form 
+              id="invite-cta" 
+              onSubmit={handleSubmit} 
+              className="relative flex flex-col sm:flex-row sm:items-center w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg sm:rounded-full p-2 sm:p-1 sm:pl-4 sm:pr-1 gap-2 sm:gap-0 shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
+            >
+              <input
+                id="invite-email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                required
+                placeholder="Email do convite pessoal"
+                className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
+                aria-label="Email do convite pessoal"
+              />
+              <Button
+                type="submit"
+                disabled={loading}
+                size="lg"
+                className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
+              >
+                {loading ? 'Enviando...' : 'Confirmar Convite'}
+              </Button>
+            </form>
+          ) : (
+            <div className="bg-green-500/20 backdrop-blur-md border border-green-400/30 rounded-lg p-4 text-center">
+              <p className="text-green-300 font-semibold">✅ Convite confirmado com sucesso!</p>
+              <p className="text-green-200 text-sm mt-1">Você receberá mais informações em breve.</p>
+            </div>
+          )}
+          
+          {message && !isSubmitted && (
+            <p className="mt-3 text-center text-sm text-white/80">{message}</p>
+          )}
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-full h-[52px] px-8 w-full md:w-auto bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] text-white font-semibold shadow-md hover:shadow-lg hover:from-[#e61619] hover:to-[#5200a3] active:scale-[0.98] transition-all"
-        >
-          {loading ? 'Enviando...' : 'Confirmar Convite'}
-        </button>
-      </form>
       </div>
-      {message && (
-        <div className="mt-3 mx-4">
-          <p className={`text-center text-sm px-4 py-2 rounded-lg backdrop-blur-sm ${
-            message.includes('confirmado') || message.includes('Convite confirmado') 
-              ? 'text-green-300 bg-green-900/20 border border-green-700/30' 
-              : 'text-red-300 bg-red-900/20 border border-red-700/30'
-          }`}>
-            {message}
-          </p>
-        </div>
-      )}
     </div>
   )
 }

@@ -2,13 +2,13 @@
 import Image from 'next/image';
 import Reveal from '@/components/Reveal';
 
-const imgLocalActivity = "/assets/c4c40af9a9b91935e00b23b6c06a93d15b3b1fdd.svg";
-const imgHub = "/assets/cc7b515256823b54905f0014d74e636ca9ea214d.svg";
-const imgCrown = "/assets/877c386dac6d7422019852336925d1b9edecd41f.svg";
-const imgHandshake = "/assets/c672ab47c4985de7b4bac75f3786c7444820510d.svg";
-const imgGroup8 = "/assets/c10d718abf23d99900e055028a514f91f4f6135a.svg";
-const imgEllipse2 = "/assets/3dc0c2b29857b87837261866f66f49358e4d4578.svg";
-const imgEllipse3 = "/assets/1887efad79848f83829bb980c00b0f1a7c952208.svg";
+const imgLocalActivity = "brunch-vip/assets/c4c40af9a9b91935e00b23b6c06a93d15b3b1fdd.svg";
+const imgHub = "brunch-vip/assets/cc7b515256823b54905f0014d74e636ca9ea214d.svg";
+const imgCrown = "brunch-vip/assets/877c386dac6d7422019852336925d1b9edecd41f.svg";
+const imgHandshake = "brunch-vip/assets/c672ab47c4985de7b4bac75f3786c7444820510d.svg";
+const imgGroup8 = "brunch-vip/assets/c10d718abf23d99900e055028a514f91f4f6135a.svg";
+const imgEllipse2 = "brunch-vip/assets/3dc0c2b29857b87837261866f66f49358e4d4578.svg";
+const imgEllipse3 = "brunch-vip/assets/1887efad79848f83829bb980c00b0f1a7c952208.svg";
 
 export default function Features() {
   const handleScrollToForm = () => {

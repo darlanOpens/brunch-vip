@@ -1,9 +1,10 @@
 import Image from 'next/image';
 
-const imgGroup4 = "/assets/0341e9c0a86b3f98698956e4119f5e265ee2f292.svg";
-const img = "/assets/fdf89fc0856d3e738f2d3f5a857c22b4d935bd45.svg";
-const img1 = "/assets/76ed304f0976a302915119c90c5d41da1b55c6f0.svg";
-const img3 = "/assets/bb74eafa9b664cdd188d0cda32c1fbe869ed5b1c.svg";
+
+const imgGroup4 = "brunch-vip/assets/0341e9c0a86b3f98698956e4119f5e265ee2f292.svg";
+const img = "brunch-vip/assets/fdf89fc0856d3e738f2d3f5a857c22b4d935bd45.svg";
+const img1 = "brunch-vip/assets/76ed304f0976a302915119c90c5d41da1b55c6f0.svg";
+const img3 = "brunch-vip/assets/bb74eafa9b664cdd188d0cda32c1fbe869ed5b1c.svg";
 
 export default function Footer() {
   return (

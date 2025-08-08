@@ -21,8 +21,8 @@ html {
 
 @font-face {
   font-family: 'Butler';
-  src: url('/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),
-       url('/butler/Butler_Webfont/Butler-Light.woff') format('woff');
+  src: url('/brunch-vip/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),
+       url('/brunch-vip/butler/Butler_Webfont/Butler-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -30,8 +30,8 @@ html {
 
 @font-face {
   font-family: 'Butler';
-  src: url('/butler/Butler_Webfont/Butler.woff2') format('woff2'),
-       url('/butler/Butler_Webfont/Butler.woff') format('woff');
+  src: url('/brunch-vip/butler/Butler_Webfont/Butler.woff2') format('woff2'),
+       url('/brunch-vip/butler/Butler_Webfont/Butler.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -39,8 +39,8 @@ html {
 
 @font-face {
   font-family: 'Butler';
-  src: url('/butler/Butler_Webfont/Butler-Medium.woff2') format('woff2'),
-       url('/butler/Butler_Webfont/Butler-Medium.woff') format('woff');
+  src: url('/brunch-vip/butler/Butler_Webfont/Butler-Medium.woff2') format('woff2'),
+       url('/brunch-vip/butler/Butler_Webfont/Butler-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -49,8 +49,8 @@ html {
 /* Aliases seguindo a convenção @butler/ usada no Figma */
 @font-face {
   font-family: '@butler/Light';
-  src: url('/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),
-       url('/butler/Butler_Webfont/Butler-Light.woff') format('woff');
+  src: url('/brunch-vip/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),
+       url('/brunch-vip/butler/Butler_Webfont/Butler-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -58,8 +58,8 @@ html {
 
 @font-face {
   font-family: '@butler/Regular';
-  src: url('/butler/Butler_Webfont/Butler.woff2') format('woff2'),
-       url('/butler/Butler_Webfont/Butler.woff') format('woff');
+  src: url('/brunch-vip/butler/Butler_Webfont/Butler.woff2') format('woff2'),
+       url('/brunch-vip/butler/Butler_Webfont/Butler.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -67,8 +67,8 @@ html {
 
 @font-face {
   font-family: '@butler/Medium';
-  src: url('/butler/Butler_Webfont/Butler-Medium.woff2') format('woff2'),
-       url('/butler/Butler_Webfont/Butler-Medium.woff') format('woff');
+  src: url('/brunch-vip/butler/Butler_Webfont/Butler-Medium.woff2') format('woff2'),
+       url('/brunch-vip/butler/Butler_Webfont/Butler-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -76,14 +76,14 @@ html {
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('/fonts/WorkSans-Regular.woff2') format('woff2');
+  src: url('/brunch-vip/fonts/WorkSans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('/fonts/WorkSans-SemiBold.woff2') format('woff2');
+  src: url('/brunch-vip/fonts/WorkSans-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
 }

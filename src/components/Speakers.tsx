@@ -59,7 +59,7 @@ function getSpeakersFromPublic(): SpeakerData[] {
         id: base,
         name,
         subtitle,
-        image: `/Participantes/${file}`,
+        image: `brunch-vip/Participantes/${file}`,
       } satisfies SpeakerData;
     })
     .sort((a, b) => a.name.localeCompare(b.name));
