@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Butler';
+  src: url('/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),
+       url('/butler/Butler_Webfont/Butler-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Butler';
+  src: url('/butler/Butler_Webfont/Butler.woff2') format('woff2'),
+       url('/butler/Butler_Webfont/Butler.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Butler';
+  src: url('/butler/Butler_Webfont/Butler-Medium.woff2') format('woff2'),
+       url('/butler/Butler_Webfont/Butler-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Aliases seguindo a convenção @butler/ usada no Figma */
+@font-face {
+  font-family: '@butler/Light';
+  src: url('/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),
+       url('/butler/Butler_Webfont/Butler-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '@butler/Regular';
+  src: url('/butler/Butler_Webfont/Butler.woff2') format('woff2'),
+       url('/butler/Butler_Webfont/Butler.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '@butler/Medium';
+  src: url('/butler/Butler_Webfont/Butler-Medium.woff2') format('woff2'),
+       url('/butler/Butler_Webfont/Butler-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/fonts/WorkSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/fonts/WorkSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #000000;
+}
+
+.adjustLetterSpacing {
+  letter-spacing: inherit;
+}
+
+.css-s9x6m5 {
+  cursor: default;
+  user-select: text;
+}
+
+.css-advv0k {
+  cursor: default;
+  user-select: text;
+}
+
+.css-b9h0bn {
+  cursor: default;
+  user-select: text;
+}
+
