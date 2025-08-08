@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { addUTMToFormData } from "@/lib/utm";
 import { getApiUrl } from "@/lib/url";
 
-const imgImage1 = "brunch-vip/assets/5cff422875440c9add4bdb28e9892cc5b0241fd1.png";
-const imgCalendarToday = "brunch-vip/assets/798ebcfe4e7d2570319351ba482e4f0733320dbd.svg";
-const imgSchedule = "brunch-vip/assets/f75f5a0a5737e0b27a8464f9b1d9b8fb5dd23477.svg";
-const imgLocationOn = "brunch-vip/assets/7c340c2e8d8da36c55235e6326ca7a5f012d6328.svg";
+// Para next/image, use caminhos absolutos do public sem basePath;
+// o Next adiciona o basePath automaticamente.
+const imgImage1 = "/assets/5cff422875440c9add4bdb28e9892cc5b0241fd1.png";
+const imgCalendarToday = "/assets/798ebcfe4e7d2570319351ba482e4f0733320dbd.svg";
+const imgSchedule = "/assets/f75f5a0a5737e0b27a8464f9b1d9b8fb5dd23477.svg";
+const imgLocationOn = "/assets/7c340c2e8d8da36c55235e6326ca7a5f012d6328.svg";
 
 export default function CTA() {
   const [email, setEmail] = useState("");

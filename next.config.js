@@ -3,7 +3,8 @@ const nextConfig = {
   output: 'standalone',
   basePath: '/brunch-vip',
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    // Se usar imagens remotas, adicione "domains" aqui. Público local não precisa.
   },
 }
 

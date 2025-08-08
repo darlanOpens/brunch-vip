@@ -1,0 +1,16 @@
+{
+  "name": "Brunch VIP",
+  "short_name": "Brunch",
+  "start_url": "/brunch-vip/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/brunch-vip/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

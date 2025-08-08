@@ -7,10 +7,6 @@ import { addUTMToFormData } from "@/lib/utm";
 import { getApiUrl } from "@/lib/url";
 import { ArrowDown, Calendar, Clock, MapPin } from "lucide-react";
 // Imagens decorativas removidas do topo do hero
-const imgVector7 = "brunch-vip/assets/186afd778d8566810f9778056c62e1450c92fc6f.svg";
-const imgCalendarToday = "brunch-vip/assets/798ebcfe4e7d2570319351ba482e4f0733320dbd.svg";
-const imgSchedule = "brunch-vip/assets/f75f5a0a5737e0b27a8464f9b1d9b8fb5dd23477.svg";
-const imgLocationOn = "brunch-vip/assets/7c340c2e8d8da36c55235e6326ca7a5f012d6328.svg";
 const imgGroup4 = "brunch-vip/assets/0341e9c0a86b3f98698956e4119f5e265ee2f292.svg";
 const img = "brunch-vip/assets/fdf89fc0856d3e738f2d3f5a857c22b4d935bd45.svg";
 const img1 = "brunch-vip/assets/76ed304f0976a302915119c90c5d41da1b55c6f0.svg";

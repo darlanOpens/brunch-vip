@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         {/* Preload background principal para melhorar LCP */}
-        <link rel="preload" as="image" href="/brunch-vip/Bg.png" imagesrcset="/brunch-vip/Bg.png" />
+        <link rel="preload" as="image" href="/brunch-vip/Bg.png" imageSrcSet="/brunch-vip/Bg.png" />
         <link rel="icon" href="/brunch-vip/icon.svg" type="image/svg+xml" />
         {/* Exemplos de preload de fontes se necessário */}
         {/* <link rel="preload" as="font" href="/brunch-vip/butler/Butler_Webfont/Butler.woff2" type="font/woff2" crossOrigin="anonymous" /> */}
