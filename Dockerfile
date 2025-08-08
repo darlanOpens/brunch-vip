@@ -16,8 +16,11 @@ FROM node:${NODE_VERSION} AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-# Porta padrão do Next.js
-EXPOSE 3000
+# Definições explícitas de rede para o servidor Next.js standalone
+ENV PORT=80
+ENV HOSTNAME=0.0.0.0
+# Porta exposta para o proxy
+EXPOSE 80
 
 # Copia apenas o necessário para o runtime standalone
 COPY --from=builder /app/.next/standalone ./

@@ -51,9 +51,9 @@ export default function Hero() {
       <div className="absolute bg-gradient-to-b from-[#00000000] from-[23.424%] h-[273.212px] left-0 to-[#000000] to-[85.477%] bottom-0 md:top-[537.79px] w-full" />
       
       <div className="absolute box-border content-stretch flex flex-col gap-6 md:gap-10 items-center justify-center left-4 right-4 top-6 md:left-[108px] md:right-[108px] md:top-14 p-0">
-        <div className="box-border content-stretch flex flex-row gap-4 items-center justify-start p-0 relative shrink-0">
+        <div className="box-border content-stretch flex flex-row gap-2 md:gap-4 items-center justify-start p-0 relative shrink-0">
           <div
-            className="bg-clip-text flex flex-col font-['@butler/Regular',_serif] justify-center leading-[0] not-italic relative shrink-0 text-[#ffffff] text-[32px] text-center text-nowrap tracking-[3.2px] uppercase"
+            className="bg-clip-text flex flex-col font-['@butler/Regular',_serif] justify-center leading-[0] not-italic relative shrink-0 text-[#ffffff] text-[20px] md:text-[32px] text-center text-nowrap tracking-[2px] md:tracking-[3.2px] uppercase"
             style={{
               WebkitTextFillColor: "transparent",
               backgroundImage: "linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%), linear-gradient(163.392deg, rgb(255, 255, 255) 28.461%, rgba(255, 255, 255, 0) 115.99%)",
@@ -61,13 +61,13 @@ export default function Hero() {
           >
             <p className="adjustLetterSpacing block leading-[normal] whitespace-pre">Brunch</p>
           </div>
-          <div className="h-9 relative shrink-0 w-0">
+          <div className="h-6 md:h-9 relative shrink-0 w-0">
             <div className="absolute bottom-0 left-[-0.5px] right-[-0.5px] top-0">
               <Image alt="" className="block max-w-none size-full" src={imgVector7} width={1} height={36} />
             </div>
           </div>
           <div
-            className="flex flex-col font-['Work_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[20px] text-center text-nowrap tracking-[6px] text-gray-300"
+            className="flex flex-col font-['Work_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[12px] md:text-[20px] text-center text-nowrap tracking-[3px] md:tracking-[6px] text-gray-300"
           >
             <p className="adjustLetterSpacing block leading-none whitespace-pre">EXPERIENCE</p>
           </div>
@@ -107,32 +107,27 @@ export default function Hero() {
         </div>
         
         <div className="css-s9x6m5 flex flex-col font-['Work_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[#ffffff] text-base md:text-[20px] text-center">
-          <p className="block leading-[1.2] whitespace-pre">Um encontro exclusivo para líderes durante o Startup Summit 2025.</p>
+          <p className="block leading-[1.3] whitespace-normal">Um encontro exclusivo para líderes durante o Startup Summit 2025.</p>
         </div>
         
-        <form id="invite-hero" onSubmit={handleSubmit} className="backdrop-blur-[6px] backdrop-filter relative rounded-[1000px] shrink-0 w-full max-w-[538px]">
-          <div className="box-border content-stretch flex flex-row items-center justify-start overflow-clip p-[4px] relative w-full">
-            <div className="basis-0 flex flex-row grow items-center self-stretch shrink-0">
-              <div className="basis-0 box-border content-stretch flex flex-row gap-1 grow h-full items-center justify-center min-h-px min-w-px overflow-clip px-6 py-0 relative shrink-0">
-                <input
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  required
-                  placeholder="Email do convite pessoal"
-                  className="basis-0 grow bg-transparent text-white placeholder-white/70 outline-none text-[16px]"
-                  aria-label="Email do convite pessoal"
-                />
-              </div>
-            </div>
-            <button type="submit" disabled={loading} className="bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] box-border content-stretch flex flex-row gap-1 h-12 items-center justify-center px-6 py-0 relative rounded-[1000px] shrink-0 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-95">
-              <span className="css-s9x6m5 flex flex-col font-['Work_Sans:SemiBold',_sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[#ffffff] text-[16px] text-center text-nowrap select-none">
-                {loading ? 'Enviando...' : 'Confirmar Convite'}
-              </span>
-            </button>
+        <form id="invite-hero" onSubmit={handleSubmit} className="w-full max-w-[538px] grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
+          <div className="flex flex-col">
+            <input
+              id="email-hero"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              required
+              placeholder="Digite seu e-mail"
+              className="h-12 w-full rounded-full bg-white/10 text-white placeholder-white/70 outline-none px-4 border border-white/20 focus:ring-2 focus:ring-primary-purple/50 focus:border-white/40"
+              aria-label="Email do convite pessoal"
+            />
           </div>
-          <div aria-hidden="true" className="absolute border border-[rgba(255,255,255,0.2)] border-solid inset-0 pointer-events-none rounded-[1000px]" />
+          <button type="submit" disabled={loading} className="bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] h-12 rounded-full px-6 text-white font-['Work_Sans:SemiBold',_sans-serif] font-semibold disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-95">
+            {loading ? 'Enviando...' : 'Confirmar Convite'}
+          </button>
+          
           {message && (
             <p className="mt-2 text-center text-sm text-white/80">{message}</p>
           )}
