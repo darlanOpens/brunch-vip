@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reduzir a agressividade do scroll em elementos com overflow para evitar "puxões" enquanto animações entram */
+html, body, #__next {
+  overscroll-behavior-y: contain;
+}
+
+/* Suaviza o scroll para âncoras e chamadas via scrollIntoView */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Preferência do usuário: reduz movimento para acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 @font-face {
   font-family: 'Butler';
   src: url('/butler/Butler_Webfont/Butler-Light.woff2') format('woff2'),

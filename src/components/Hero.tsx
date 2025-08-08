@@ -53,7 +53,7 @@ export default function Hero() {
       
       <div className="absolute box-border content-stretch flex flex-col gap-6 md:gap-10 items-center justify-center left-4 right-4 top-6 md:left-[108px] md:right-[108px] md:top-14 p-0">
         <Reveal variant="fade" delay={100} className="w-full">
-        <div className="box-border content-stretch flex flex-row gap-2 md:gap-4 items-center justify-start p-0 relative shrink-0">
+        <div className="box-border content-stretch flex flex-row gap-2 md:gap-4 items-center justify-center p-0 relative shrink-0">
           <div
             className="bg-clip-text flex flex-col font-['@butler/Regular',_serif] justify-center leading-[0] not-italic relative shrink-0 text-[#ffffff] text-[20px] md:text-[32px] text-center text-nowrap tracking-[2px] md:tracking-[3.2px] uppercase"
             style={{
@@ -79,7 +79,7 @@ export default function Hero() {
       
       <div className="absolute box-border content-stretch flex flex-col gap-8 md:gap-[51px] items-center justify-center left-1/2 max-w-[938px] w-full p-0 top-28 md:top-[157px] translate-x-[-50%] px-4">
         <Reveal variant="fade-up" delay={150} className="w-full">
-        <div className="box-border content-stretch flex flex-row flex-wrap gap-4 md:gap-6 items-center justify-center md:justify-start opacity-70 p-0 relative shrink-0 text-sm md:text-[16px]">
+        <div className="box-border content-stretch flex flex-row flex-wrap gap-4 md:gap-6 items-center justify-center opacity-70 p-0 relative shrink-0 text-sm md:text-[16px]">
           <div className="box-border content-stretch flex flex-row gap-2 items-center justify-start p-0 relative shrink-0">
             <div className="relative shrink-0 size-6">
               <Image alt="" className="block max-w-none size-full" src={imgCalendarToday} width={24} height={24} />
@@ -120,7 +120,7 @@ export default function Hero() {
         </Reveal>
         
         <Reveal variant="fade-up" delay={300} className="w-full">
-        <form id="invite-hero" onSubmit={handleSubmit} className="w-full max-w-[538px] grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
+        <form id="invite-hero" onSubmit={handleSubmit} className="w-full max-w-[538px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
           <div className="flex flex-col">
             <input
               id="email-hero"
@@ -145,7 +145,7 @@ export default function Hero() {
         </Reveal>
         
         <Reveal variant="fade-up" delay={350}>
-        <div className="box-border content-stretch flex flex-row gap-[20.04px] items-center justify-start p-0 relative shrink-0">
+        <div className="box-border content-stretch flex flex-row gap-[20.04px] items-center justify-center p-0 relative shrink-0">
           <div className="flex flex-col font-['Work_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] opacity-50 relative shrink-0 text-[#ffffff] text-[12px] text-center text-nowrap">
             <p className="block leading-[1.2] whitespace-pre">Apresentado por:</p>
           </div>

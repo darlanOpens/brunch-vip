@@ -12,16 +12,16 @@ export default function Sponsors() {
         <p className="adjustLetterSpacing block leading-none whitespace-pre">Nossos patrocinadores</p>
       </div>
       
-      <div className="box-border grid grid-cols-2 sm:grid-cols-3 md:grid-cols-[repeat(6,_minmax(0px,_1fr))] grid-rows-[repeat(2,_minmax(0px,_1fr))] h-auto md:h-[215px] max-w-[1224px] p-0 relative shrink-0 w-full">
+      <div className="box-border grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 grid-rows-2 h-auto md:h-[215px] max-w-[1224px] p-0 relative shrink-0 w-full">
         {/* First row */}
-        <div className="[grid-area:1_/_1] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-8 relative shrink-0 w-[48.934px]">
             <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
           </div>
         </div>
         
-        <div className="[grid-area:1_/_2] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
             <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
@@ -38,14 +38,14 @@ export default function Sponsors() {
           </div>
         </div>
         
-        <div className="[grid-area:1_/_3] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-8 relative shrink-0 w-[48.934px]">
             <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
           </div>
         </div>
         
-        <div className="[grid-area:1_/_4] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
             <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
@@ -62,14 +62,14 @@ export default function Sponsors() {
           </div>
         </div>
         
-        <div className="[grid-area:1_/_5] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-8 relative shrink-0 w-[48.934px]">
             <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
           </div>
         </div>
         
-        <div className="[grid-area:1_/_6] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
             <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
@@ -87,7 +87,7 @@ export default function Sponsors() {
         </div>
         
         {/* Second row */}
-        <div className="[grid-area:2_/_1] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
             <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
@@ -104,14 +104,14 @@ export default function Sponsors() {
           </div>
         </div>
         
-        <div className="[grid-area:2_/_2] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-8 relative shrink-0 w-[48.934px]">
             <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
           </div>
         </div>
         
-        <div className="[grid-area:2_/_3] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
             <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
@@ -128,14 +128,14 @@ export default function Sponsors() {
           </div>
         </div>
         
-        <div className="[grid-area:2_/_4] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-8 relative shrink-0 w-[48.934px]">
             <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
           </div>
         </div>
         
-        <div className="[grid-area:2_/_5] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
             <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
@@ -152,7 +152,7 @@ export default function Sponsors() {
           </div>
         </div>
         
-        <div className="[grid-area:2_/_6] box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="h-8 relative shrink-0 w-[48.934px]">
             <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />

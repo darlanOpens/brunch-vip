@@ -7,6 +7,7 @@ type RevealProps = {
   className?: string;
   delay?: number;
   variant?: "fade" | "fade-up" | "fade-down";
+  once?: boolean;
 };
 
 export default function Reveal({
@@ -14,6 +15,7 @@ export default function Reveal({
   className = "",
   delay = 0,
   variant = "fade-up",
+  once = true,
 }: RevealProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -26,24 +28,24 @@ export default function Reveal({
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          if (once) observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.35, rootMargin: "0px 0px -25% 0px" }
     );
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [once]);
 
   const baseClasses =
-    "transition-all duration-700 ease-out will-change-transform";
+    "transition-all duration-500 ease-out will-change-transform transform-gpu motion-reduce:transition-none";
   const hiddenClasses =
     variant === "fade"
-      ? "opacity-0"
+      ? "opacity-0 motion-reduce:opacity-100"
       : variant === "fade-down"
-      ? "opacity-0 -translate-y-4"
-      : "opacity-0 translate-y-4"; // fade-up default
+      ? "opacity-0 -translate-y-2 motion-reduce:opacity-100 motion-reduce:transform-none"
+      : "opacity-0 translate-y-2 motion-reduce:opacity-100 motion-reduce:transform-none"; // fade-up default
   const shownClasses = "opacity-100 translate-y-0";
 
   const style = delay ? ({ transitionDelay: `${delay}ms` } as const) : undefined;

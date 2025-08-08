@@ -21,7 +21,7 @@ const config: Config = {
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(to right, #fb1b1f, #5b00b6)',
-        hero: "url('/assets/Bg.png')",
+         hero: "url('/Bg.png')",
       },
     },
   },
