@@ -199,9 +199,9 @@ export default function Hero() {
                       onChange={(e) => setEmail(e.target.value)}
                       type="email"
                       required
-                      placeholder="Email do convite pessoal"
+                      placeholder="Email de acesso"
                       className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
-                      aria-label="Email do convite pessoal"
+                      aria-label="Email de acesso"
                     />
                     <Button
                       type="submit"
@@ -209,7 +209,7 @@ export default function Hero() {
                       size="lg"
                       className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
                     >
-                      {loading ? 'Enviando...' : 'Confirmar Convite'}
+                      {loading ? 'Enviando...' : 'Prosseguir para confirmação'}
                     </Button>
                   </form>
                 )
@@ -218,6 +218,10 @@ export default function Hero() {
                   <p className="text-green-300 font-semibold">✅ Convite confirmado com sucesso!</p>
                   <p className="text-green-200 text-sm mt-1">Você receberá mais informações em breve.</p>
                 </div>
+              )}
+
+              {!isEmailFromUrl && !isSubmitted && (
+                <small className="opacity-80 block mt-2 text-white/80">VIP • vagas limitadas</small>
               )}
               
               {message && !isSubmitted && (

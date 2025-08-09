@@ -2,8 +2,20 @@ import { Calendar, Clock, MapPin } from "lucide-react"
 import Footer from "@/components/Footer"
 import WaitlistForm from "./waitlist-form"
 import { withBasePath } from "@/utils/basePath"
+import type { Metadata } from "next"
 
-export default function LoteEsgotadoPage() {
+export const metadata: Metadata = {
+  title: "Pré-seleção — Brunch VIP",
+  description:
+    "Pouquíssimas confirmações adicionais por seleção. Envie seus dados para participar da pré-seleção.",
+  openGraph: {
+    title: "Pré-seleção — Brunch VIP",
+    description:
+      "Pouquíssimas confirmações adicionais por seleção. Envie seus dados para participar da pré-seleção.",
+  },
+}
+
+export default function PreSelecaoPage() {
   const EVENT_DETAILS = [
     { icon: Calendar, label: "28 de agosto" },
     { icon: Clock, label: "09h – 12h" },
@@ -42,12 +54,14 @@ export default function LoteEsgotadoPage() {
 
           {/* Títulos */}
           <div className="flex max-w-[860px] flex-col items-center gap-5 text-center">
-            <p className="text-white/60 tracking-[0.4em] uppercase text-xs md:text-sm">Lote esgotado</p>
             <h1 className="font-['@butler/Medium',_serif] text-white text-[32px] md:text-[44px] leading-tight">
-              Não encontramos o seu email na lista de convidados
+              Pré-seleção
             </h1>
-            <p className="font-['Work_Sans:Regular',_sans-serif] text-[15px] md:text-[16px] text-white/90 max-w-[700px]">
-              Mas não se preocupe! O <span className="font-semibold">Brunch VIP Startup Summit</span> também é para você e estamos abrindo um novo lote em seguida! Inscreva-se abaixo para entrar na <span className="font-semibold">Lista de Espera</span> e reservar seu ingresso em primeira mão.
+            <p className="font-['Work_Sans:SemiBold',_sans-serif] text-[18px] md:text-[20px] text-white max-w-[760px] leading-snug">
+              Estamos finalizando as presenças do Brunch VIP. Algumas confirmações adicionais serão liberadas por seleção.
+            </p>
+            <p className="font-['Work_Sans:Regular',_sans-serif] text-[14px] md:text-[15px] text-white/60 max-w-[720px] mt-2 leading-relaxed">
+              Quer participar? Apresente-se agora. Leva menos de 1 minuto. Nossa curadoria é contínua e as confirmações extras são limitadas.
             </p>
 
             <div className="mt-1 flex flex-wrap items-center justify-center gap-6 opacity-70">
@@ -60,12 +74,26 @@ export default function LoteEsgotadoPage() {
             </div>
           </div>
 
-          {/* Card de lista de espera */}
+          {/* Card de pré-seleção */}
           <div className="w-full max-w-[920px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg p-6 md:p-10 shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset]">
             <h2 className="text-center text-white font-['Work_Sans:SemiBold',_sans-serif] text-[18px] md:text-[20px] mb-6">
-              Entre na lista de Espera
+              Envie seus dados para entrar na pré-seleção
             </h2>
             <WaitlistForm />
+          </div>
+
+          {/* Seções curtas */}
+          <div className="w-full max-w-[920px] px-2 md:px-0">
+            <div className="mt-8 grid grid-cols-1 gap-6 text-white/90">
+              <div>
+                <h3 className="font-['Work_Sans:SemiBold',_sans-serif] text-[16px] md:text-[18px] mb-2">Como funciona</h3>
+                <p className="font-['Work_Sans:Regular',_sans-serif] text-[14px] md:text-[15px]">Nossa equipe valida as últimas presenças ao longo do dia. Se o seu perfil se encaixar nesta edição, confirmaremos por e-mail e WhatsApp.</p>
+              </div>
+              <div>
+                <h3 className="font-['Work_Sans:SemiBold',_sans-serif] text-[16px] md:text-[18px] mb-2">Tempo & exclusividade</h3>
+                <p className="font-['Work_Sans:Regular',_sans-serif] text-[14px] md:text-[15px]">As confirmações adicionais são raras e saem rápido — envie sua apresentação agora.</p>
+              </div>
+            </div>
           </div>
         </section>
       </main>

@@ -27,10 +27,10 @@ export default function WaitlistForm() {
         telefone,
         empresa,
         cargo,
-        origem: "waitlist-lote-esgotado",
+        origem: "waitlist-pre-selecao",
       })
       // eslint-disable-next-line no-console
-      console.log("[lote-esgotado] waitlist payload:", payload)
+      console.log("[pre-selecao] waitlist payload:", payload)
       await new Promise((r) => setTimeout(r, 600))
       setSubmitted(true)
     } finally {
@@ -41,7 +41,7 @@ export default function WaitlistForm() {
   if (submitted) {
     return (
       <div className="mx-auto max-w-[640px] rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
-        ✅ Inscrição recebida! Te avisaremos assim que abrirmos um novo lote.
+        ✅ Recebemos sua apresentação! Nossa equipe vai avaliar e, se aprovado, você receberá sua confirmação em breve.
       </div>
     )
   }
@@ -101,11 +101,14 @@ export default function WaitlistForm() {
           disabled={submitting}
           className="h-12 md:h-14 w-full rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] text-white hover:from-[#e0181c] hover:to-[#4d0099]"
         >
-          {submitting ? "Enviando..." : "Entrar na Lista de Espera"}
+          {submitting ? "Enviando..." : "Entrar na pré-seleção"}
         </Button>
       </div>
+      <p className="text-center text-white/70 text-sm mt-2">Fique atento! Se aprovado, você receberá um contato do nosso time!</p>
+      <p className="text-center text-white/60 text-xs mt-1">Seus dados são usados apenas para a avaliação de presença.</p>
     </form>
   )
 }
+
 
 

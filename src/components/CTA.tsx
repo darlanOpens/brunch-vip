@@ -111,7 +111,7 @@ export default function CTA() {
       {/* Formulário de inscrição */}
       <div className="w-full px-5 sm:px-6 md:px-0 flex justify-center relative z-20">
         <div className="hero-form w-full max-w-[538px] mx-auto">
-          {!isSubmitted ? (
+           {!isSubmitted ? (
             <form 
               id="invite-cta" 
               onSubmit={handleSubmit} 
@@ -124,9 +124,9 @@ export default function CTA() {
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 required
-                placeholder="Email do convite pessoal"
+                placeholder="Email de acesso"
                 className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
-                aria-label="Email do convite pessoal"
+                aria-label="Email de acesso"
               />
               <Button
                 type="submit"
@@ -134,7 +134,7 @@ export default function CTA() {
                 size="lg"
                 className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
               >
-                {loading ? 'Enviando...' : 'Confirmar Convite'}
+                {loading ? 'Enviando...' : 'Prosseguir para confirmação'}
               </Button>
             </form>
           ) : (
@@ -144,8 +144,13 @@ export default function CTA() {
             </div>
           )}
           
-          {message && !isSubmitted && (
-            <p className="mt-3 text-center text-sm text-white/80">{message}</p>
+          {!isSubmitted && (
+            <>
+              {message && (
+                <p className="mt-3 text-center text-sm text-white/80">{message}</p>
+              )}
+              <small className="opacity-80 block mt-2 text-center text-white/80">VIP • vagas limitadas</small>
+            </>
           )}
         </div>
       </div>
