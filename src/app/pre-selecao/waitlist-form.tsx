@@ -11,6 +11,7 @@ export default function WaitlistForm() {
   const [cargo, setCargo] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const fieldWrapper =
     "relative w-full h-14 md:h-16 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-lg shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset] focus-within:border-white/20 transition-colors"
@@ -29,10 +30,15 @@ export default function WaitlistForm() {
         cargo,
         origem: "waitlist-pre-selecao",
       })
-      // eslint-disable-next-line no-console
-      console.log("[pre-selecao] waitlist payload:", payload)
-      await new Promise((r) => setTimeout(r, 600))
+      // Dispara webhook fire-and-forget para waitlist
+      fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(() => {})
+
       setSubmitted(true)
+      setShowSuccess(true)
     } finally {
       setSubmitting(false)
     }
@@ -40,8 +46,12 @@ export default function WaitlistForm() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-[640px] rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
-        ✅ Recebemos sua apresentação! Nossa equipe vai avaliar e, se aprovado, você receberá sua confirmação em breve.
+      <div className="mx-auto max-w-[640px]">
+        {showSuccess && (
+          <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
+            ✅ Recebemos sua apresentação! Nossa equipe vai avaliar e, se aprovado, você receberá sua confirmação em breve.
+          </div>
+        )}
       </div>
     )
   }

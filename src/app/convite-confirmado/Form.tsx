@@ -69,6 +69,7 @@ export default function Form() {
   const [businessModel, setBusinessModel] = useState<string>("")
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const selectedChannels = useMemo(
     () =>
@@ -108,10 +109,21 @@ export default function Form() {
         faturamento: revenueRange,
         modeloNegocio: businessModel,
       })
-      // eslint-disable-next-line no-console
-      console.log("[convite-confirmado] form payload:", payload)
-      await new Promise((r) => setTimeout(r, 600))
+      // Fire-and-forget para o webhook de convite confirmado
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: '', form_title: 'Convite Confirmado - Detalhes', form_id: 'convite-confirmado-extra' }),
+      }).catch(() => {})
+
+      // Também envia payload completo para auditoria (se configurado)
+      const auditUrl = process.env.NEXT_PUBLIC_AUDIT_URL
+      if (auditUrl) {
+        fetch(auditUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {})
+      }
+
       setSubmitted(true)
+      setShowSuccess(true)
     } finally {
       setSubmitting(false)
     }
@@ -119,8 +131,12 @@ export default function Form() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-[640px] rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
-        ✅ Dados enviados! Em breve entraremos em contato com os próximos passos.
+      <div className="mx-auto max-w-[640px]">
+        {showSuccess && (
+          <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
+            ✅ Obrigado! Recebemos suas informações. Em breve nosso time poderá entrar em contato com próximos passos do evento.
+          </div>
+        )}
       </div>
     )
   }
