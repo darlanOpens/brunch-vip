@@ -5,11 +5,14 @@ import Gallery from '@/components/Gallery'
 import Sponsors from '@/components/Sponsors'
 import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
+import { Suspense } from 'react'
 
 export default function LandingPage() {
   return (
     <div className="bg-[#000000] box-border content-stretch flex flex-col gap-1 items-start justify-start p-0 relative size-full">
-      <Hero />
+      <Suspense fallback={null}>
+        <Hero />
+      </Suspense>
       <Features />
       <Speakers />
       <Gallery />
