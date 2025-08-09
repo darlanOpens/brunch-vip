@@ -110,18 +110,12 @@ export default function Form() {
         faturamento: revenueRange,
         modeloNegocio: businessModel,
       })
-      // Fire-and-forget para o webhook de convite confirmado
-      fetch('/api/lead', {
+      // Fire-and-forget específico para detalhes pós-confirmação
+      fetch('/api/confirm-details', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: '', form_title: 'Convite Confirmado - Detalhes', form_id: 'convite-confirmado-extra' }),
+        body: JSON.stringify(payload),
       }).catch(() => {})
-
-      // Também envia payload completo para auditoria (se configurado)
-      const auditUrl = process.env.NEXT_PUBLIC_AUDIT_URL
-      if (auditUrl) {
-        fetch(auditUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {})
-      }
 
       setSubmitted(true)
       setShowSuccess(true)
