@@ -5,6 +5,22 @@ export const metadata: Metadata = {
   title: 'Brunch Experience - O Futuro Agora da Experiência do Cliente',
   description: 'Um encontro exclusivo para líderes durante o Startup Summit 2025.',
   manifest: '/brunch-vip/manifest.webmanifest',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://go.opens.com.br'),
+  openGraph: {
+    type: 'website',
+    url: '/brunch-vip',
+    title: 'Brunch Experience - O Futuro Agora da Experiência do Cliente',
+    description: 'Um encontro exclusivo para líderes durante o Startup Summit 2025.',
+    images: [
+      { url: '/brunch-vip/preview.png', width: 1200, height: 630, alt: 'Brunch VIP' },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Brunch Experience - O Futuro Agora da Experiência do Cliente',
+    description: 'Um encontro exclusivo para líderes durante o Startup Summit 2025.',
+    images: ['/brunch-vip/preview.png'],
+  },
 }
 
 export default function RootLayout({
