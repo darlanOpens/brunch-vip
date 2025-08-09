@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { addUTMToFormData } from "@/lib/utm";
 import { getApiUrl } from "@/lib/url";
 import { ArrowDown, Calendar, Clock, MapPin } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 // Imagens decorativas removidas do topo do hero
 const imgGroup4 = "brunch-vip/assets/0341e9c0a86b3f98698956e4119f5e265ee2f292.svg";
 const img = "brunch-vip/assets/fdf89fc0856d3e738f2d3f5a857c22b4d935bd45.svg";
@@ -21,6 +22,8 @@ export default function Hero() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEmailFromUrl, setIsEmailFromUrl] = useState(false);
+  const searchParams = useSearchParams();
 
   /**
    * Função para scroll suave até o formulário
@@ -32,45 +35,49 @@ export default function Hero() {
     }
   }
 
-  /**
-   * Função para lidar com o submit do formulário de convite
-   */
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  useEffect(() => {
+    const emailFromUrl = searchParams.get('emailconf');
+    if (emailFromUrl) {
+      setEmail(emailFromUrl);
+      setIsEmailFromUrl(true);
+    }
+  }, [searchParams]);
+
+  async function submitLead() {
+    setLoading(true);
     setMessage(null);
-    
     try {
       const payload = addUTMToFormData({
         email: email.trim(),
         form_title: "Brunch VIP",
         form_id: "Brunch VIP Hero",
-      })
+      });
       const response = await fetch(getApiUrl('/api/lead'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-      })
-      
-      const data = await response.json()
-      
+      });
+      const data = await response.json();
       if (response.ok && data.success && data.redirectUrl) {
-        window.location.href = data.redirectUrl
+        window.location.href = data.redirectUrl;
       } else if (response.ok && data?.ok) {
         setMessage('Convite confirmado! Verifique seu e-mail.');
-        setEmail('')
+        setEmail('');
         setIsSubmitted(true);
       } else {
         setMessage(data?.error || 'Falha ao confirmar convite.');
       }
     } catch (error) {
-      console.error('Erro:', error)
+      console.error('Erro:', error);
       setMessage('Erro de rede. Tente novamente.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await submitLead();
   }
 
   return (
@@ -165,31 +172,46 @@ export default function Hero() {
               className="hero-form w-full max-w-[538px] mx-auto"
             >
               {!isSubmitted ? (
-                <form 
-                  id="invite-hero" 
-                  onSubmit={handleSubmit} 
-                  className="relative flex flex-col sm:flex-row sm:items-center w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg sm:rounded-full p-2 sm:p-1 sm:pl-4 sm:pr-1 gap-2 sm:gap-0 shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
-                >
-                  <input
-                    id="email-hero"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
-                    required
-                    placeholder="Email do convite pessoal"
-                    className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
-                    aria-label="Email do convite pessoal"
-                  />
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    size="lg"
-                    className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
+                isEmailFromUrl ? (
+                  <div className="relative w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg p-4 text-center">
+                    <p className="text-white mb-3">Identificamos seu e-mail como <span className="font-semibold break-all">{email}</span></p>
+                    <Button
+                      type="button"
+                      onClick={submitLead}
+                      disabled={loading}
+                      size="lg"
+                      className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
+                    >
+                      {loading ? 'Confirmando...' : 'Confirmar Presença'}
+                    </Button>
+                  </div>
+                ) : (
+                  <form 
+                    id="invite-hero" 
+                    onSubmit={handleSubmit} 
+                    className="relative flex flex-col sm:flex-row sm:items-center w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg sm:rounded-full p-2 sm:p-1 sm:pl-4 sm:pr-1 gap-2 sm:gap-0 shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
                   >
-                    {loading ? 'Enviando...' : 'Confirmar Convite'}
-                  </Button>
-                </form>
+                    <input
+                      id="email-hero"
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      type="email"
+                      required
+                      placeholder="Email do convite pessoal"
+                      className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
+                      aria-label="Email do convite pessoal"
+                    />
+                    <Button
+                      type="submit"
+                      disabled={loading}
+                      size="lg"
+                      className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
+                    >
+                      {loading ? 'Enviando...' : 'Confirmar Convite'}
+                    </Button>
+                  </form>
+                )
               ) : (
                 <div className="bg-green-500/20 backdrop-blur-md border border-green-400/30 rounded-lg p-4 text-center">
                   <p className="text-green-300 font-semibold">✅ Convite confirmado com sucesso!</p>
