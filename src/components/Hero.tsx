@@ -174,7 +174,8 @@ export default function Hero() {
               {!isSubmitted ? (
                 isEmailFromUrl ? (
                   <div className="relative w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg p-4 text-center">
-                    <p className="text-white mb-3">Identificamos seu e-mail como <span className="font-semibold break-all">{email}</span></p>
+                    <p className="text-white">Identificamos seu e-mail como</p>
+                    <p className="text-white font-semibold break-all mb-3">{email}</p>
                     <Button
                       type="button"
                       onClick={submitLead}
