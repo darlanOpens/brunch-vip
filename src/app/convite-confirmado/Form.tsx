@@ -1,10 +1,10 @@
 "use client"
-import React, { useMemo, useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { addUTMToFormData } from "@/lib/utm"
 
-type BusinessChannel = "chat" | "email" | "phone" | "social" | "app"
+// Campos simplificados: removidos CX, time, canais e desafios
 
 // Opções alinhadas ao snippet de referência
 const COMPANY_SIZES = [
@@ -55,57 +55,58 @@ export default function Form() {
   const [companySize, setCompanySize] = useState<string>("")
   const [sector, setSector] = useState<string>("")
   const [products, setProducts] = useState("")
-  const [hasCXArea, setHasCXArea] = useState<"Sim" | "Não" | "">("Sim")
-  const [teamSize, setTeamSize] = useState("")
-  const [channels, setChannels] = useState<Record<BusinessChannel, boolean>>({
-    chat: false,
-    email: false,
-    phone: false,
-    social: false,
-    app: false,
-  })
-  const [challenges, setChallenges] = useState("")
+  // removidos: hasCXArea, teamSize, channels, challenges
   const [revenueRange, setRevenueRange] = useState<string>("")
   const [businessModel, setBusinessModel] = useState<string>("")
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  function ensureUrlScheme(value: string): string {
+    if (!value) return value
+    const trimmed = value.trim()
+    if (/^https?:\/\//i.test(trimmed) || /^\/\//.test(trimmed)) return trimmed
+    return `https://${trimmed}`
+  }
 
-  const selectedChannels = useMemo(
-    () =>
-      Object.entries(channels)
-        .filter(([, v]) => v)
-        .map(([k]) => k as BusinessChannel),
-    [channels],
-  )
+  function validate(): boolean {
+    const nextErrors: Record<string, string> = {}
+    if (!fullName || fullName.trim().length < 2) {
+      nextErrors.fullName = 'Informe seu nome completo.'
+    }
+    if (linkedin) {
+      const normalized = ensureUrlScheme(linkedin)
+      try {
+        // eslint-disable-next-line no-new
+        new URL(normalized)
+      } catch {
+        nextErrors.linkedin = 'Informe uma URL válida (ex.: https://linkedin.com/in/seu-perfil).'
+      }
+    }
+    setErrors(nextErrors)
+    return Object.keys(nextErrors).length === 0
+  }
 
-  const toggleChannel = (key: BusinessChannel) =>
-    setChannels((prev) => ({ ...prev, [key]: !prev[key] }))
+  // Campos de canais removidos
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSubmitting(true)
     try {
+      if (!validate()) {
+        setSubmitting(false)
+        return
+      }
+
+      const normalizedLinkedin = linkedin ? ensureUrlScheme(linkedin) : ''
+
       const payload = addUTMToFormData({
         nomeCompleto: fullName,
-        linkedin,
+        linkedin: normalizedLinkedin,
         tamanhoEmpresa: companySize,
         setorAtuacao: sector,
         principaisProdutos: products,
-        areaExperiencia: hasCXArea,
-        quantasPessoas: teamSize,
-        canaisAtendimento: selectedChannels.map((c) =>
-          c === "chat"
-            ? "Chat Online"
-            : c === "email"
-            ? "E-mail"
-            : c === "phone"
-            ? "Telefone"
-            : c === "social"
-            ? "Redes Sociais"
-            : "Aplicativo próprio",
-        ),
-        desafios: challenges,
+        // demais campos removidos a pedido
         faturamento: revenueRange,
         modeloNegocio: businessModel,
       })
@@ -161,6 +162,9 @@ export default function Form() {
           required
           aria-label="Nome completo"
         />
+        {errors.fullName && (
+          <small className="absolute -bottom-5 left-4 text-red-400">{errors.fullName}</small>
+        )}
       </div>
 
       {/* Linkedin */}
@@ -170,10 +174,14 @@ export default function Form() {
           inputMode="url"
           value={linkedin}
           onChange={(e) => setLinkedin(e.target.value)}
+          onBlur={() => setLinkedin((v) => ensureUrlScheme(v))}
           placeholder="Qual seu LinkedIn? (URL)"
           className={inputBase}
           aria-label="URL do LinkedIn"
         />
+        {errors.linkedin && (
+          <small className="absolute -bottom-5 left-4 text-red-400">{errors.linkedin}</small>
+        )}
       </div>
 
       {/* Tamanho da Empresa */}
@@ -224,86 +232,7 @@ export default function Form() {
         />
       </div>
 
-      {/* Área dedicada para Experiência do Cliente (CX) */}
-      <div className="mt-2 flex flex-col gap-2 text-white">
-        <p className="text-sm opacity-90">Empresa possui uma área dedicada para Experiência do Cliente (CX)?</p>
-        <div className="flex items-center gap-6">
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="hasCX"
-              value="Sim"
-              checked={hasCXArea === "Sim"}
-              onChange={() => setHasCXArea("Sim")}
-              className="h-5 w-5 accent-white"
-            />
-            <span>Sim</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="hasCX"
-              value="Não"
-              checked={hasCXArea === "Não"}
-              onChange={() => setHasCXArea("Não")}
-              className="h-5 w-5 accent-white"
-            />
-            <span>Não</span>
-          </label>
-        </div>
-      </div>
-
-      {/* Tamanho do time */}
-      <div className={fieldWrapper}>
-        <input
-          type="text"
-          inputMode="numeric"
-          value={teamSize}
-          onChange={(e) => setTeamSize(e.target.value)}
-          placeholder="Quantas pessoas compõem a equipe de atendimento?"
-          className={inputBase}
-          aria-label="Tamanho do time de atendimento"
-        />
-      </div>
-
-      {/* Canais de atendimento */}
-      <div className="mt-2 flex flex-col gap-2 text-white">
-        <p className="text-sm opacity-90">Quais são os principais canais de atendimento ao cliente na sua empresa?</p>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-          <label className="flex items-center gap-2">
-            <input type="checkbox" className="h-5 w-5 accent-white" checked={channels.chat} onChange={() => toggleChannel("chat")} />
-            <span>Chat online</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" className="h-5 w-5 accent-white" checked={channels.email} onChange={() => toggleChannel("email")} />
-            <span>E-mail</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" className="h-5 w-5 accent-white" checked={channels.phone} onChange={() => toggleChannel("phone")} />
-            <span>Telefone</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" className="h-5 w-5 accent-white" checked={channels.social} onChange={() => toggleChannel("social")} />
-            <span>Redes Sociais</span>
-          </label>
-          <label className="flex items-center gap-2 md:col-span-2">
-            <input type="checkbox" className="h-5 w-5 accent-white" checked={channels.app} onChange={() => toggleChannel("app")} />
-            <span>Aplicativo próprio</span>
-          </label>
-        </div>
-      </div>
-
-      {/* Desafios em CX */}
-      <div className={fieldWrapper}>
-        <input
-          type="text"
-          value={challenges}
-          onChange={(e) => setChallenges(e.target.value)}
-          placeholder="Quais são os principais desafios que a empresa enfrenta em CX?"
-          className={inputBase}
-          aria-label="Desafios em CX"
-        />
-      </div>
+      {/* Campos removidos: área de CX, tamanho do time, canais e desafios */}
 
       {/* Faturamento anual */}
       <div className={fieldWrapper}>

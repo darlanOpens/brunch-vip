@@ -12,6 +12,28 @@ export default function WaitlistForm() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  function ensureUrlScheme(value: string): string {
+    if (!value) return value
+    const trimmed = value.trim()
+    if (/^https?:\/\//i.test(trimmed) || /^\/\//.test(trimmed)) return trimmed
+    return `https://${trimmed}`
+  }
+
+  function validate(): boolean {
+    const nextErrors: Record<string, string> = {}
+    if (!nome || nome.trim().length < 2) {
+      nextErrors.nome = 'Informe seu nome completo.'
+    }
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      nextErrors.email = 'Informe um e-mail válido.'
+    }
+    if (telefone && !/^\+?[0-9()\s-]{7,}$/.test(telefone.trim())) {
+      nextErrors.telefone = 'Informe um telefone válido (apenas números, +, -, espaço, parênteses).'
+    }
+    setErrors(nextErrors)
+    return Object.keys(nextErrors).length === 0
+  }
 
   const fieldWrapper =
     "relative w-full h-14 md:h-16 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-lg shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset] focus-within:border-white/20 transition-colors"
@@ -22,6 +44,10 @@ export default function WaitlistForm() {
     e.preventDefault()
     setSubmitting(true)
     try {
+      if (!validate()) {
+        setSubmitting(false)
+        return
+      }
       const payload = addUTMToFormData({
         nomeCompleto: nome,
         email,
@@ -49,7 +75,7 @@ export default function WaitlistForm() {
       <div className="mx-auto max-w-[640px]">
         {showSuccess && (
           <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
-            ✅ Recebemos sua apresentação! Nossa equipe vai avaliar e, se aprovado, você receberá sua confirmação em breve.
+            ✅ Recebemos sua inscrição! Nossa equipe vai avaliar e, se aprovado, você receberá sua confirmação em breve.
           </div>
         )}
       </div>
@@ -67,6 +93,9 @@ export default function WaitlistForm() {
           className={inputBase}
           required
         />
+        {errors.nome && (
+          <small className="absolute -bottom-5 left-4 text-red-400">{errors.nome}</small>
+        )}
       </div>
       <div className={fieldWrapper}>
         <input
@@ -77,6 +106,9 @@ export default function WaitlistForm() {
           className={inputBase}
           required
         />
+        {errors.email && (
+          <small className="absolute -bottom-5 left-4 text-red-400">{errors.email}</small>
+        )}
       </div>
       <div className={fieldWrapper}>
         <input
@@ -86,6 +118,9 @@ export default function WaitlistForm() {
           placeholder="Telefone"
           className={inputBase}
         />
+        {errors.telefone && (
+          <small className="absolute -bottom-5 left-4 text-red-400">{errors.telefone}</small>
+        )}
       </div>
       <div className={fieldWrapper}>
         <input
