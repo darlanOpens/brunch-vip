@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { addUTMToFormData } from "@/lib/utm"
+import { GTM_EVENTS, pushToDataLayer } from "@/lib/gtm"
 
 export default function WaitlistForm() {
   const [nome, setNome] = useState("")
@@ -62,6 +63,12 @@ export default function WaitlistForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }).catch(() => {})
+
+      // GTM: evento de envio com identificação do formulário
+      pushToDataLayer(GTM_EVENTS.WAITLIST_SUBMIT, {
+        formName: 'pre-selecao_waitlist',
+        status: 'submitted',
+      })
 
       setSubmitted(true)
       setShowSuccess(true)

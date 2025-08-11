@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import GTMProvider from '@/components/GTMProvider'
 
 export const metadata: Metadata = {
   title: 'Brunch Experience - O Futuro Agora da Experiência do Cliente',
@@ -37,7 +38,20 @@ export default function RootLayout({
         {/* Exemplos de preload de fontes se necessário */}
         {/* <link rel="preload" as="font" href="/brunch-vip/butler/Butler_Webfont/Butler.woff2" type="font/woff2" crossOrigin="anonymous" /> */}
       </head>
-      <body>{children}</body>
+      <body>
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <noscript>
+            {/* Fallback noscript do GTM */}
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        )}
+        <GTMProvider>{children}</GTMProvider>
+      </body>
     </html>
   )
 }

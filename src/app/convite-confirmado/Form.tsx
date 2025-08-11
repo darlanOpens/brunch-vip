@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { addUTMToFormData } from "@/lib/utm"
+import { GTM_EVENTS, pushToDataLayer } from "@/lib/gtm"
 
 // Campos simplificados: removidos CX, time, canais e desafios
 
@@ -116,6 +117,12 @@ export default function Form() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }).catch(() => {})
+
+      // GTM: evento de envio com identificação do formulário
+      pushToDataLayer(GTM_EVENTS.CONFIRM_DETAILS_SUBMIT, {
+        formName: 'convite_confirmado_detalhes',
+        status: 'submitted',
+      })
 
       setSubmitted(true)
       setShowSuccess(true)
