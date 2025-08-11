@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import GTMProvider from '@/components/GTMProvider'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Brunch Experience - O Futuro Agora da Experiência do Cliente',
@@ -50,7 +51,9 @@ export default function RootLayout({
             />
           </noscript>
         )}
-        <GTMProvider>{children}</GTMProvider>
+        <Suspense fallback={null}>
+          <GTMProvider>{children}</GTMProvider>
+        </Suspense>
       </body>
     </html>
   )
