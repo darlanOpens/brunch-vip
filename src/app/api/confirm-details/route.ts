@@ -63,45 +63,61 @@ export async function POST(request: NextRequest) {
 
     // targetUrl garantido aqui
 
+    // Monta payload: aceita formato { resumeUrl, payload } ou body direto
+    const basePayload = typeof body?.payload === 'object' && body?.payload !== null
+      ? body.payload
+      : Object.fromEntries(Object.entries(body || {}).filter(([k]) => k !== 'resumeUrl' && k !== 'webhook_url'))
+
     const payload = {
-      ...body,
+      ...basePayload,
       timestamp: new Date().toISOString(),
       userAgent: request.headers.get('user-agent'),
       ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
     }
 
-    // fire-and-forget
     const start = Date.now()
-    fetch(targetUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(20_000),
-    })
-      .then(async (res) => {
-        if (!debug) return
-        let text = ''
-        try {
-          text = await res.text()
-        } catch {}
-        console.log('[confirm-details] n8n response', {
-          ok: res.ok,
-          status: res.status,
-          elapsedMs: Date.now() - start,
-          target: maskUrl(targetUrl!),
-          bodyPreview: text ? text.slice(0, 1000) : '',
-        })
+    try {
+      const n8nResponse = await fetch(targetUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(20_000),
       })
-      .catch((err) => {
-        if (!debug) return
+
+      const elapsed = Date.now() - start
+      let responseText = ''
+      try {
+        responseText = await n8nResponse.text()
+      } catch {}
+
+      let parsed: unknown
+      try {
+        parsed = responseText ? JSON.parse(responseText) : null
+      } catch {
+        parsed = { raw: responseText }
+      }
+
+      if (debug) {
+        console.log('[confirm-details] n8n response', {
+          ok: n8nResponse.ok,
+          status: n8nResponse.status,
+          elapsedMs: elapsed,
+          target: maskUrl(targetUrl!),
+          bodyPreview: responseText ? responseText.slice(0, 1000) : '',
+        })
+      }
+
+      return NextResponse.json({ ok: n8nResponse.ok, status: n8nResponse.status, data: parsed }, { status: 200 })
+    } catch (err: any) {
+      if (debug) {
         console.error('[confirm-details] n8n fetch error', {
           target: maskUrl(targetUrl!),
           elapsedMs: Date.now() - start,
           error: err?.message || String(err),
         })
-      })
-
-    return NextResponse.json({ ok: true }, { status: 202 })
+      }
+      return NextResponse.json({ ok: false, status: 0, error: 'Erro ao repassar para n8n' }, { status: 502 })
+    }
   } catch {
     const debug = process.env.NEXT_PUBLIC_DEBUG_WEBHOOKS === 'true'
     if (debug) {
