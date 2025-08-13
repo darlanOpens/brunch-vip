@@ -21,6 +21,14 @@ export default function WaitlistForm() {
 
   useEffect(() => {
     const presetEmail = getPreSelecaoEmail()
+    const resumeUrl = getPreSelecaoWebhookUrl()
+    const debugEnabled = process.env.NEXT_PUBLIC_DEBUG_WEBHOOKS === 'true'
+    
+    if (debugEnabled) {
+      console.log('[PRE-SELECAO] Email pré-preenchido:', presetEmail)
+      console.log('[PRE-SELECAO] Resume URL encontrada:', resumeUrl)
+    }
+    
     if (presetEmail) setEmail(presetEmail)
   }, [])
 
@@ -78,20 +86,46 @@ export default function WaitlistForm() {
         origem: "waitlist-pre-selecao",
       })
       const resumeUrl = getPreSelecaoWebhookUrl()
+      const debugEnabled = process.env.NEXT_PUBLIC_DEBUG_WEBHOOKS === 'true'
+      
+      if (debugEnabled) {
+        console.log('[PRE-SELECAO] Resume URL no momento do envio:', resumeUrl)
+        console.log('[PRE-SELECAO] Payload a ser enviado:', JSON.stringify(payload, null, 2))
+      }
+      
       if (resumeUrl) {
+        if (debugEnabled) {
+          console.log('[PRE-SELECAO] Enviando via wait-resume para:', resumeUrl)
+        }
+        
         const resp = await fetch(getApiUrl('/api/wait-resume'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ resumeUrl, payload }),
         })
         const json = await resp.json().catch(() => ({} as any))
+        
+        if (debugEnabled) {
+          console.log('[PRE-SELECAO] Resposta da wait-resume:', JSON.stringify(json, null, 2))
+        }
+        
         if (resp.ok && json?.ok) {
           toast.success('Dados enviados com sucesso!')
           clearPreSelecaoWebhookUrl()
+          if (debugEnabled) {
+            console.log('[PRE-SELECAO] Resume URL limpa do sessionStorage')
+          }
         } else {
           toast.error('Não foi possível enviar seus dados. Tente novamente.')
+          if (debugEnabled) {
+            console.error('[PRE-SELECAO] Erro na resposta wait-resume:', resp.status, json)
+          }
         }
       } else {
+        if (debugEnabled) {
+          console.log('[PRE-SELECAO] Nenhuma resume URL encontrada, usando fallback waitlist')
+        }
+        
         // Fallback para waitlist genérica
         fetch(getApiUrl('/api/waitlist'), {
           method: 'POST',

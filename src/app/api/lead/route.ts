@@ -14,34 +14,18 @@ const inputSchema = z.object({
 })
 
 const webhookResponseSchema = z.object({
+  success: z.boolean().optional(),
   redirectUrl: z.string(),
   webhook_url: z.string().optional(),
-  success: z.boolean().optional(),
 })
 
-const FALLBACK_REDIRECT = process.env.FALLBACK_REDIRECT_PATH || '/lista-espera'
-
-async function getRedirectUrlFromWebhook(payload: object, url: string): Promise<string> {
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      // Node 18+ nativo
-      signal: AbortSignal.timeout(20_000),
-    })
-    if (!response.ok) return FALLBACK_REDIRECT
-    const json = await response.json()
-    const parsed = webhookResponseSchema.safeParse(json)
-    if (!parsed.success) return FALLBACK_REDIRECT
-    return parsed.data.redirectUrl
-  } catch {
-    return FALLBACK_REDIRECT
-  }
-}
+const FALLBACK_REDIRECT = process.env.FALLBACK_REDIRECT_PATH || '/pre-selecao'
 
 export async function POST(request: NextRequest) {
-  const webhookUrl = process.env.WEBHOOK_LEAD_URL
+  // Usar WEBHOOK_RSVP_URL conforme documentação, com fallback para WEBHOOK_LEAD_URL
+  const webhookUrl = process.env.WEBHOOK_RSVP_URL || process.env.WEBHOOK_LEAD_URL
+  const debugEnabled = process.env.NEXT_PUBLIC_DEBUG_WEBHOOKS === 'true'
+  
   if (!webhookUrl) {
     return NextResponse.json({ success: false, message: 'Webhook não configurado' }, { status: 503 })
   }
@@ -55,34 +39,75 @@ export async function POST(request: NextRequest) {
       userAgent: request.headers.get('user-agent'),
       ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
     }
-    // Faz a chamada para obter redirectUrl e, se existir, também passamos webhook_url para o cliente
-    try {
-      const resp = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(webhookPayload),
-        signal: AbortSignal.timeout(20_000),
-      })
-      if (!resp.ok) {
-        const fallback = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
-        return NextResponse.json({ success: true, redirectUrl: fallback }, { status: 200 })
-      }
-      const json = await resp.json().catch(() => ({}))
-      const parsed = webhookResponseSchema.safeParse(json)
-      if (!parsed.success) {
-        const fallback = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
-        return NextResponse.json({ success: true, redirectUrl: fallback }, { status: 200 })
-      }
-      return NextResponse.json({ success: true, redirectUrl: parsed.data.redirectUrl, webhook_url: parsed.data.webhook_url }, { status: 200 })
-    } catch {
-      const fallback = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
-      return NextResponse.json({ success: true, redirectUrl: fallback }, { status: 200 })
+
+    if (debugEnabled) {
+      console.log('[LEAD API] Enviando payload para n8n:', JSON.stringify(webhookPayload, null, 2))
     }
+
+    // Enviar para n8n e repassar resposta exatamente como vem
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(webhookPayload),
+      signal: AbortSignal.timeout(20_000),
+    })
+
+    if (!response.ok) {
+      if (debugEnabled) {
+        console.log('[LEAD API] Erro na resposta do n8n:', response.status, response.statusText)
+      }
+      // Fallback se n8n não responder adequadamente
+      return NextResponse.json({ 
+        success: true, 
+        redirectUrl: FALLBACK_REDIRECT 
+      }, { status: 200 })
+    }
+
+    const responseData = await response.json()
+    
+    if (debugEnabled) {
+      console.log('[LEAD API] Resposta do n8n:', JSON.stringify(responseData, null, 2))
+    }
+
+    // Validar estrutura da resposta
+    const parsed = webhookResponseSchema.safeParse(responseData)
+    if (!parsed.success) {
+      if (debugEnabled) {
+        console.log('[LEAD API] Resposta inválida do n8n, usando fallback:', parsed.error)
+      }
+      return NextResponse.json({ 
+        success: true, 
+        redirectUrl: FALLBACK_REDIRECT 
+      }, { status: 200 })
+    }
+
+    // Repassar resposta do n8n EXATAMENTE como recebida
+    const finalResponse = {
+      success: true,
+      redirectUrl: parsed.data.redirectUrl,
+      ...(parsed.data.webhook_url && { webhook_url: parsed.data.webhook_url }),
+    }
+
+    if (debugEnabled) {
+      console.log('[LEAD API] Enviando resposta final:', JSON.stringify(finalResponse, null, 2))
+    }
+
+    return NextResponse.json(finalResponse, { status: 200 })
+
   } catch (err) {
+    if (debugEnabled) {
+      console.error('[LEAD API] Erro geral:', err)
+    }
+    
     if (err instanceof z.ZodError) {
       return NextResponse.json({ success: false, message: 'Dados inválidos', errors: err.issues }, { status: 400 })
     }
-    return NextResponse.json({ success: false, message: 'Erro interno' }, { status: 500 })
+    
+    // Em caso de erro, usar fallback
+    return NextResponse.json({ 
+      success: true, 
+      redirectUrl: FALLBACK_REDIRECT 
+    }, { status: 200 })
   }
 }
 

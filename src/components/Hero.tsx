@@ -59,15 +59,32 @@ export default function Hero() {
         body: JSON.stringify(payload),
       });
       const data = await response.json();
+      
+      // Debug logs
+      const debugEnabled = process.env.NEXT_PUBLIC_DEBUG_WEBHOOKS === 'true';
+      if (debugEnabled) {
+        console.log('[HERO] Resposta da API lead:', JSON.stringify(data, null, 2));
+      }
+      
       if (response.ok && data.success && data.redirectUrl) {
         try {
           if (data?.webhook_url && typeof data.webhook_url === 'string') {
+            if (debugEnabled) {
+              console.log('[HERO] Salvando webhook_url:', data.webhook_url);
+            }
             savePreSelecaoWebhookUrl(data.webhook_url);
           }
           if (typeof data.redirectUrl === 'string' && data.redirectUrl.includes('/pre-selecao')) {
+            if (debugEnabled) {
+              console.log('[HERO] Salvando e-mail para pré-seleção:', email.trim());
+            }
             savePreSelecaoEmail(email.trim());
           }
-        } catch {}
+        } catch (err) {
+          if (debugEnabled) {
+            console.error('[HERO] Erro ao salvar dados:', err);
+          }
+        }
         window.location.href = data.redirectUrl;
       } else if (response.ok && data?.ok) {
         setMessage('Convite confirmado! Verifique seu e-mail.');
