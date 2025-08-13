@@ -22,8 +22,8 @@ const webhookResponseSchema = z.object({
 const FALLBACK_REDIRECT = process.env.FALLBACK_REDIRECT_PATH || '/pre-selecao'
 
 export async function POST(request: NextRequest) {
-  // Usar WEBHOOK_RSVP_URL conforme documentação, com fallback para WEBHOOK_LEAD_URL
-  const webhookUrl = process.env.WEBHOOK_RSVP_URL || process.env.WEBHOOK_LEAD_URL
+  // Usar somente WEBHOOK_LEAD_URL conforme solicitado
+  const webhookUrl = process.env.WEBHOOK_LEAD_URL
   
   if (!webhookUrl) {
     return NextResponse.json({ success: false, message: 'Webhook não configurado' }, { status: 503 })

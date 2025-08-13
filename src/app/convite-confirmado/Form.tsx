@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react"
 import { addUTMToFormData } from "@/lib/utm"
 import { GTM_EVENTS, pushToDataLayer } from "@/lib/gtm"
 import { getApiUrl } from "@/lib/url"
+import { getPreSelecaoWebhookUrl } from "@/lib/client-storage"
 
 // Campos simplificados: removidos CX, time, canais e desafios
 
@@ -113,10 +114,15 @@ export default function Form() {
         modeloNegocio: businessModel,
       })
       // Fire-and-forget específico para detalhes pós-confirmação
+      const resumeUrl = getPreSelecaoWebhookUrl()
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (resumeUrl) {
+        headers['x-resume-url'] = resumeUrl
+      }
       fetch(getApiUrl('/api/confirm-details'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        headers,
+        body: JSON.stringify({ ...payload, ...(resumeUrl ? { resumeUrl } : {}) }),
       }).catch(() => {})
 
       // GTM: evento de envio com identificação do formulário
