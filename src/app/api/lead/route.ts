@@ -24,7 +24,6 @@ const FALLBACK_REDIRECT = process.env.FALLBACK_REDIRECT_PATH || '/pre-selecao'
 export async function POST(request: NextRequest) {
   // Usar WEBHOOK_RSVP_URL conforme documentação, com fallback para WEBHOOK_LEAD_URL
   const webhookUrl = process.env.WEBHOOK_RSVP_URL || process.env.WEBHOOK_LEAD_URL
-  const debugEnabled = process.env.NEXT_PUBLIC_DEBUG_WEBHOOKS === 'true'
   
   if (!webhookUrl) {
     return NextResponse.json({ success: false, message: 'Webhook não configurado' }, { status: 503 })
@@ -40,10 +39,6 @@ export async function POST(request: NextRequest) {
       ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
     }
 
-    if (debugEnabled) {
-      console.log('[LEAD API] Enviando payload para n8n:', JSON.stringify(webhookPayload, null, 2))
-    }
-
     // Enviar para n8n e repassar resposta exatamente como vem
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -53,9 +48,6 @@ export async function POST(request: NextRequest) {
     })
 
     if (!response.ok) {
-      if (debugEnabled) {
-        console.log('[LEAD API] Erro na resposta do n8n:', response.status, response.statusText)
-      }
       // Fallback se n8n não responder adequadamente
       return NextResponse.json({ 
         success: true, 
@@ -64,17 +56,10 @@ export async function POST(request: NextRequest) {
     }
 
     const responseData = await response.json()
-    
-    if (debugEnabled) {
-      console.log('[LEAD API] Resposta do n8n:', JSON.stringify(responseData, null, 2))
-    }
 
     // Validar estrutura da resposta
     const parsed = webhookResponseSchema.safeParse(responseData)
     if (!parsed.success) {
-      if (debugEnabled) {
-        console.log('[LEAD API] Resposta inválida do n8n, usando fallback:', parsed.error)
-      }
       return NextResponse.json({ 
         success: true, 
         redirectUrl: FALLBACK_REDIRECT 
@@ -88,17 +73,9 @@ export async function POST(request: NextRequest) {
       ...(parsed.data.webhook_url && { webhook_url: parsed.data.webhook_url }),
     }
 
-    if (debugEnabled) {
-      console.log('[LEAD API] Enviando resposta final:', JSON.stringify(finalResponse, null, 2))
-    }
-
     return NextResponse.json(finalResponse, { status: 200 })
 
   } catch (err) {
-    if (debugEnabled) {
-      console.error('[LEAD API] Erro geral:', err)
-    }
-    
     if (err instanceof z.ZodError) {
       return NextResponse.json({ success: false, message: 'Dados inválidos', errors: err.issues }, { status: 400 })
     }
