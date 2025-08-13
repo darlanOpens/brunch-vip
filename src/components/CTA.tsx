@@ -5,6 +5,7 @@ import { withBasePath } from '@/utils/basePath';
 import { Button } from "@/components/ui/button";
 import { addUTMToFormData } from "@/lib/utm";
 import { getApiUrl } from "@/lib/url";
+import { savePreSelecaoEmail, savePreSelecaoWebhookUrl } from "@/lib/client-storage";
 
 // Para next/image, use caminhos absolutos do public sem basePath;
 // o Next adiciona o basePath automaticamente.
@@ -44,6 +45,14 @@ export default function CTA() {
       const data = await response.json()
       
       if (response.ok && data.success && data.redirectUrl) {
+        try {
+          if (data?.webhook_url && typeof data.webhook_url === 'string') {
+            savePreSelecaoWebhookUrl(data.webhook_url)
+          }
+          if (typeof data.redirectUrl === 'string' && data.redirectUrl.includes('/pre-selecao')) {
+            savePreSelecaoEmail(email.trim())
+          }
+        } catch {}
         window.location.href = data.redirectUrl
       } else if (response.ok && data?.ok) {
         setMessage('Convite confirmado! Verifique seu e-mail.');

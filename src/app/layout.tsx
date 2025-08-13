@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import GTMProvider from '@/components/GTMProvider'
+import { Toaster } from 'sonner'
 import { Suspense } from 'react'
 
 export const metadata: Metadata = {
@@ -52,7 +53,10 @@ export default function RootLayout({
           </noscript>
         )}
         <Suspense fallback={null}>
-          <GTMProvider>{children}</GTMProvider>
+          <GTMProvider>
+            {children}
+            <Toaster richColors position="top-center" />
+          </GTMProvider>
         </Suspense>
       </body>
     </html>

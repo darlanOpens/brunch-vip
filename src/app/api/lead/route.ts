@@ -15,6 +15,8 @@ const inputSchema = z.object({
 
 const webhookResponseSchema = z.object({
   redirectUrl: z.string(),
+  webhook_url: z.string().optional(),
+  success: z.boolean().optional(),
 })
 
 const FALLBACK_REDIRECT = process.env.FALLBACK_REDIRECT_PATH || '/lista-espera'
@@ -53,8 +55,29 @@ export async function POST(request: NextRequest) {
       userAgent: request.headers.get('user-agent'),
       ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
     }
-    const redirectUrl = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
-    return NextResponse.json({ success: true, redirectUrl }, { status: 200 })
+    // Faz a chamada para obter redirectUrl e, se existir, também passamos webhook_url para o cliente
+    try {
+      const resp = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(webhookPayload),
+        signal: AbortSignal.timeout(20_000),
+      })
+      if (!resp.ok) {
+        const fallback = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
+        return NextResponse.json({ success: true, redirectUrl: fallback }, { status: 200 })
+      }
+      const json = await resp.json().catch(() => ({}))
+      const parsed = webhookResponseSchema.safeParse(json)
+      if (!parsed.success) {
+        const fallback = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
+        return NextResponse.json({ success: true, redirectUrl: fallback }, { status: 200 })
+      }
+      return NextResponse.json({ success: true, redirectUrl: parsed.data.redirectUrl, webhook_url: parsed.data.webhook_url }, { status: 200 })
+    } catch {
+      const fallback = await getRedirectUrlFromWebhook(webhookPayload, webhookUrl)
+      return NextResponse.json({ success: true, redirectUrl: fallback }, { status: 200 })
+    }
   } catch (err) {
     if (err instanceof z.ZodError) {
       return NextResponse.json({ success: false, message: 'Dados inválidos', errors: err.issues }, { status: 400 })

@@ -1,8 +1,12 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { addUTMToFormData } from "@/lib/utm"
+import { getPreSelecaoEmail, getPreSelecaoWebhookUrl, clearPreSelecaoWebhookUrl } from "@/lib/client-storage"
+import { toast } from "sonner"
+import { CheckCircle } from "lucide-react"
 import { GTM_EVENTS, pushToDataLayer } from "@/lib/gtm"
+import { getApiUrl } from "@/lib/url"
 
 export default function WaitlistForm() {
   const [nome, setNome] = useState("")
@@ -14,6 +18,22 @@ export default function WaitlistForm() {
   const [submitted, setSubmitted] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    const presetEmail = getPreSelecaoEmail()
+    if (presetEmail) setEmail(presetEmail)
+  }, [])
+
+  function onlyDigits(value: string): string { return value.replace(/\D+/g, '') }
+  function formatPhoneBr(value: string): string {
+    const digits = onlyDigits(value)
+    if (digits.length <= 10) {
+      const d = digits.padEnd(10, ' ')
+      return `(${d.slice(0,2).trim()}) ${d.slice(2,6).trim()}-${d.slice(6,10).trim()}`.replace(/[-\s]+$/, '')
+    }
+    const d = digits.padEnd(11, ' ')
+    return `(${d.slice(0,2).trim()}) ${d.slice(2,7).trim()}-${d.slice(7,11).trim()}`.replace(/[-\s]+$/, '')
+  }
   function ensureUrlScheme(value: string): string {
     if (!value) return value
     const trimmed = value.trim()
@@ -57,12 +77,29 @@ export default function WaitlistForm() {
         cargo,
         origem: "waitlist-pre-selecao",
       })
-      // Dispara webhook fire-and-forget para waitlist
-      fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).catch(() => {})
+      const resumeUrl = getPreSelecaoWebhookUrl()
+      if (resumeUrl) {
+        const resp = await fetch(getApiUrl('/api/wait-resume'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ resumeUrl, payload }),
+        })
+        const json = await resp.json().catch(() => ({} as any))
+        if (resp.ok && json?.ok) {
+          toast.success('Dados enviados com sucesso!')
+          clearPreSelecaoWebhookUrl()
+        } else {
+          toast.error('Não foi possível enviar seus dados. Tente novamente.')
+        }
+      } else {
+        // Fallback para waitlist genérica
+        fetch(getApiUrl('/api/waitlist'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).catch(() => {})
+        toast.success('Dados enviados com sucesso!')
+      }
 
       // GTM: evento de envio com identificação do formulário
       pushToDataLayer(GTM_EVENTS.WAITLIST_SUBMIT, {
@@ -81,8 +118,9 @@ export default function WaitlistForm() {
     return (
       <div className="mx-auto max-w-[640px]">
         {showSuccess && (
-          <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/15 p-4 text-center text-emerald-200">
-            ✅ Recebemos sua inscrição! Nossa equipe vai avaliar e, se aprovado, você receberá sua confirmação em breve.
+          <div className="flex flex-col items-center justify-center py-8">
+            <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
+            <p className="font-sans text-lg text-white/90 text-center">Recebemos seus dados. Obrigado!</p>
           </div>
         )}
       </div>
@@ -121,7 +159,7 @@ export default function WaitlistForm() {
         <input
           type="tel"
           value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
+          onChange={(e) => setTelefone(formatPhoneBr(e.target.value))}
           placeholder="Telefone"
           className={inputBase}
         />
