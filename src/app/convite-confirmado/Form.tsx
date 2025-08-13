@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { addUTMToFormData } from "@/lib/utm"
 import { GTM_EVENTS, pushToDataLayer } from "@/lib/gtm"
+import { getApiUrl } from "@/lib/url"
 
 // Campos simplificados: removidos CX, time, canais e desafios
 
@@ -112,7 +113,7 @@ export default function Form() {
         modeloNegocio: businessModel,
       })
       // Fire-and-forget específico para detalhes pós-confirmação
-      fetch('/api/confirm-details', {
+      fetch(getApiUrl('/api/confirm-details'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
