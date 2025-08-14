@@ -22,38 +22,6 @@ export default function Sponsors() {
         {/* First row */}
         <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-8 relative shrink-0 w-[48.934px]">
-            <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
-          </div>
-        </div>
-        
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-8 relative shrink-0 w-[48.934px]">
-            <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
-          </div>
-        </div>
-        
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
-            <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
-              <div className="absolute inset-0">
-                <Image alt="" className="block max-w-none size-full" src={img} width={24} height={24} />
-              </div>
-              <div className="absolute bottom-1/4 left-[25.27%] right-[25.26%] top-1/4">
-                <Image alt="" className="block max-w-none size-full" src={img1} width={12} height={12} />
-              </div>
-            </div>
-            <div className="absolute bottom-[25.2%] left-[34.95%] right-0 top-[24.8%]">
-              <Image alt="" className="block max-w-none size-full" src={img3} width={40} height={30} />
-            </div>
-          </div>
-        </div>
-        
-        {/* Second row */}
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="relative shrink-0 h-[32px] w-[120px]">
             <Image alt="Indaia" className="block max-w-none size-full object-contain" src={imgIndaia} width={120} height={32} />
           </div>
@@ -91,54 +59,6 @@ export default function Sponsors() {
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="relative shrink-0 h-[32px] w-[120px]">
             <Image alt="Oracle" className="block max-w-none size-full object-contain" src={imgOracle} width={120} height={32} />
-          </div>
-        </div>
-        
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
-            <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
-              <div className="absolute inset-0">
-                <Image alt="" className="block max-w-none size-full" src={img} width={24} height={24} />
-              </div>
-              <div className="absolute bottom-1/4 left-[25.27%] right-[25.26%] top-1/4">
-                <Image alt="" className="block max-w-none size-full" src={img1} width={12} height={12} />
-              </div>
-            </div>
-            <div className="absolute bottom-[25.2%] left-[34.95%] right-0 top-[24.8%]">
-              <Image alt="" className="block max-w-none size-full" src={img3} width={40} height={30} />
-            </div>
-          </div>
-        </div>
-        
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-8 relative shrink-0 w-[48.934px]">
-            <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
-          </div>
-        </div>
-        
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-[24.291px] relative shrink-0 w-[86.876px]">
-            <div className="absolute bottom-0 left-0 right-[72.04%] top-0">
-              <div className="absolute inset-0">
-                <Image alt="" className="block max-w-none size-full" src={img} width={24} height={24} />
-              </div>
-              <div className="absolute bottom-1/4 left-[25.27%] right-[25.26%] top-1/4">
-                <Image alt="" className="block max-w-none size-full" src={img1} width={12} height={12} />
-              </div>
-            </div>
-            <div className="absolute bottom-[25.2%] left-[34.95%] right-0 top-[24.8%]">
-              <Image alt="" className="block max-w-none size-full" src={img3} width={40} height={30} />
-            </div>
-          </div>
-        </div>
-        
-        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
-          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
-          <div className="h-8 relative shrink-0 w-[48.934px]">
-            <Image alt="" className="block max-w-none size-full" src={imgGroup4} width={49} height={32} />
           </div>
         </div>
       </div>
