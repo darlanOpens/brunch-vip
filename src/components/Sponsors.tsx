@@ -6,6 +6,10 @@ const img1 = "brunch-vip/assets/76ed304f0976a302915119c90c5d41da1b55c6f0.svg";
 const img3 = "brunch-vip/assets/bb74eafa9b664cdd188d0cda32c1fbe869ed5b1c.svg";
 const imgIndaia = "/brunch-vip/apoiadores/indaia.svg";
 const imgXplan = "/brunch-vip/apoiadores/Xplan.svg";
+const imgBeeWell = "/brunch-vip/apoiadores/BeeWell.svg";
+const imgEconomiaSc = "/brunch-vip/apoiadores/Economia%20Sc.svg";
+const imgGrupoLeonora = "/brunch-vip/apoiadores/Grupo%20Leonora.svg";
+const imgOracle = "/brunch-vip/apoiadores/Oracle.svg";
 
 export default function Sponsors() {
   return (
@@ -100,6 +104,34 @@ export default function Sponsors() {
           <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
           <div className="relative shrink-0 h-[32px] w-[140px]">
             <Image alt="Xplan" className="block max-w-none size-full object-contain" src={imgXplan} width={140} height={32} />
+          </div>
+        </div>
+        
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
+          <div className="relative shrink-0 h-[32px] w-[120px]">
+            <Image alt="BeeWell" className="block max-w-none size-full object-contain" src={imgBeeWell} width={120} height={32} />
+          </div>
+        </div>
+        
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
+          <div className="relative shrink-0 h-[32px] w-[140px]">
+            <Image alt="Economia SC" className="block max-w-none size-full object-contain" src={imgEconomiaSc} width={140} height={32} />
+          </div>
+        </div>
+        
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
+          <div className="relative shrink-0 h-[32px] w-[140px]">
+            <Image alt="Grupo Leonora" className="block max-w-none size-full object-contain" src={imgGrupoLeonora} width={140} height={32} />
+          </div>
+        </div>
+        
+        <div className="box-border content-stretch flex flex-col gap-1 h-[108px] items-center justify-center px-6 py-10 relative shrink-0">
+          <div aria-hidden="true" className="absolute border border-[#343434] border-solid inset-[-0.5px] pointer-events-none" />
+          <div className="relative shrink-0 h-[32px] w-[120px]">
+            <Image alt="Oracle" className="block max-w-none size-full object-contain" src={imgOracle} width={120} height={32} />
           </div>
         </div>
         
