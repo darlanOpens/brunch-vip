@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { withBasePath } from '@/utils/basePath';
 import { Button } from "@/components/ui/button";
 import { addUTMToFormData } from "@/lib/utm";
+import { applyPhoneMask, removePhoneMask, isValidPhone } from "@/utils/phoneMask";
 import { getApiUrl } from "@/lib/url";
 import { savePreSelecaoEmail, savePreSelecaoWebhookUrl } from "@/lib/client-storage";
 
@@ -15,7 +16,7 @@ const imgSchedule = "brunch-vip/assets/f75f5a0a5737e0b27a8464f9b1d9b8fb5dd23477.
 const imgLocationOn = "brunch-vip/assets/7c340c2e8d8da36c55235e6326ca7a5f012d6328.svg";
 
 export default function CTA() {
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -30,7 +31,7 @@ export default function CTA() {
     
     try {
       const payload = addUTMToFormData({
-        email: email.trim(),
+        phone: removePhoneMask(phone),
         form_title: "Brunch VIP",
         form_id: "Brunch VIP CTA",
       })
@@ -50,13 +51,13 @@ export default function CTA() {
             savePreSelecaoWebhookUrl(data.webhook_url)
           }
           if (typeof data.redirectUrl === 'string' && data.redirectUrl.includes('/pre-selecao')) {
-            savePreSelecaoEmail(email.trim())
+            savePreSelecaoEmail(removePhoneMask(phone))
           }
         } catch {}
         window.location.href = data.redirectUrl
       } else if (response.ok && data?.ok) {
-        setMessage('Convite confirmado! Verifique seu e-mail.');
-        setEmail('')
+        setMessage('Convite confirmado! Verifique seu telefone.');
+        setPhone('')
         setIsSubmitted(true);
       } else {
         setMessage(data?.error || 'Falha ao confirmar convite.');
@@ -127,24 +128,24 @@ export default function CTA() {
               className="relative flex flex-col sm:flex-row sm:items-center w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg sm:rounded-full p-2 sm:p-1 sm:pl-4 sm:pr-1 gap-2 sm:gap-0 shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
             >
               <input
-                id="invite-email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
+                id="invite-phone"
+                name="phone"
+                value={phone}
+                onChange={(e) => setPhone(applyPhoneMask(e.target.value))}
+                type="tel"
                 required
-                placeholder="Email de acesso"
+                placeholder="Telefone de acesso"
                 className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
-                aria-label="Email de acesso"
+                aria-label="Telefone de acesso"
               />
               <Button
-                type="submit"
-                disabled={loading}
-                size="lg"
-                className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
-              >
-                {loading ? 'Enviando...' : 'Prosseguir para confirmação'}
-              </Button>
+                 type="submit"
+                 disabled={loading || !isValidPhone(phone)}
+                 size="lg"
+                 className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
+               >
+                 {loading ? 'Enviando...' : 'Prosseguir para confirmação'}
+               </Button>
             </form>
           ) : (
             <div className="bg-green-500/20 backdrop-blur-md border border-green-400/30 rounded-lg p-4 text-center">

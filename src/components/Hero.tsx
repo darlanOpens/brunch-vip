@@ -8,6 +8,7 @@ import { savePreSelecaoEmail, savePreSelecaoWebhookUrl } from "@/lib/client-stor
 import { getApiUrl } from "@/lib/url";
 import { ArrowDown, Calendar, Clock, MapPin } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { applyPhoneMask, removePhoneMask, isValidPhone } from "@/utils/phoneMask";
 // Imagens decorativas removidas do topo do hero
 const imgGroup4 = "brunch-vip/assets/0341e9c0a86b3f98698956e4119f5e265ee2f292.svg";
 const img = "brunch-vip/assets/fdf89fc0856d3e738f2d3f5a857c22b4d935bd45.svg";
@@ -19,11 +20,11 @@ const img2 = "brunch-vip/assets/d3b14860ba16eee325b22ce7722dd4e5343c6dcc.svg";
  * Implementa o cabeçalho principal com animações e CTA
  */
 export default function Hero() {
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isEmailFromUrl, setIsEmailFromUrl] = useState(false);
+  const [isPhoneFromUrl, setIsPhoneFromUrl] = useState(false);
   const searchParams = useSearchParams();
 
   /**
@@ -37,10 +38,10 @@ export default function Hero() {
   }
 
   useEffect(() => {
-    const emailFromUrl = searchParams.get('emailconf');
-    if (emailFromUrl) {
-      setEmail(emailFromUrl);
-      setIsEmailFromUrl(true);
+    const phoneFromUrl = searchParams.get('telconf');
+    if (phoneFromUrl) {
+      setPhone(applyPhoneMask(phoneFromUrl));
+      setIsPhoneFromUrl(true);
     }
   }, [searchParams]);
 
@@ -49,7 +50,7 @@ export default function Hero() {
     setMessage(null);
     try {
       const payload = addUTMToFormData({
-        email: email.trim(),
+        phone: removePhoneMask(phone),
         form_title: "Brunch VIP",
         form_id: "Brunch VIP Hero",
       });
@@ -65,13 +66,13 @@ export default function Hero() {
             savePreSelecaoWebhookUrl(data.webhook_url);
           }
           if (typeof data.redirectUrl === 'string' && data.redirectUrl.includes('/pre-selecao')) {
-            savePreSelecaoEmail(email.trim());
+            savePreSelecaoEmail(removePhoneMask(phone));
           }
         } catch {}
         window.location.href = data.redirectUrl;
       } else if (response.ok && data?.ok) {
-        setMessage('Convite confirmado! Verifique seu e-mail.');
-        setEmail('');
+        setMessage('Convite confirmado! Verifique seu telefone.');
+        setPhone('');
         setIsSubmitted(true);
       } else {
         setMessage(data?.error || 'Falha ao confirmar convite.');
@@ -181,10 +182,10 @@ export default function Hero() {
               className="hero-form w-full max-w-[538px] mx-auto"
             >
               {!isSubmitted ? (
-                isEmailFromUrl ? (
+                isPhoneFromUrl ? (
                   <div className="relative w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg p-4 text-center">
-                    <p className="text-white">Identificamos seu e-mail como</p>
-                    <p className="text-white font-semibold break-all mb-3">{email}</p>
+                    <p className="text-white">Identificamos seu telefone como</p>
+                    <p className="text-white font-semibold break-all mb-3">{phone}</p>
                     <Button
                       type="button"
                       onClick={submitLead}
@@ -202,19 +203,22 @@ export default function Hero() {
                     className="relative flex flex-col sm:flex-row sm:items-center w-full bg-white/5 backdrop-blur-md border border-white/25 rounded-lg sm:rounded-full p-2 sm:p-1 sm:pl-4 sm:pr-1 gap-2 sm:gap-0 shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
                   >
                     <input
-                      id="email-hero"
-                      name="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      type="email"
+                      id="phone-hero"
+                      name="phone"
+                      value={phone}
+                      onChange={(e) => {
+                        const maskedValue = applyPhoneMask(e.target.value);
+                        setPhone(maskedValue);
+                      }}
+                      type="tel"
                       required
-                      placeholder="Email de acesso"
+                      placeholder="Telefone de contato"
                       className="flex-1 h-20 md:h-14 bg-transparent text-white placeholder-white/70 focus:outline-none border-none rounded-lg sm:rounded-full px-4 md:px-5 text-base md:text-lg text-center sm:text-left"
-                      aria-label="Email de acesso"
+                      aria-label="Telefone de contato"
                     />
                     <Button
                       type="submit"
-                      disabled={loading}
+                      disabled={loading || !isValidPhone(phone)}
                       size="lg"
                       className="text-white text-sm md:text-base px-5 md:px-6 h-10 md:h-14 w-full sm:w-auto whitespace-nowrap rounded-lg sm:rounded-full bg-gradient-to-r from-[#fb1b1f] to-[#5b00b6] hover:from-[#e0181c] hover:to-[#4d0099] disabled:opacity-50 border-0 shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
                     >
@@ -229,7 +233,7 @@ export default function Hero() {
                 </div>
               )}
 
-              {!isEmailFromUrl && !isSubmitted && (
+              {!isPhoneFromUrl && !isSubmitted && (
                 <small className="opacity-80 block mt-2 text-white/80">VIP • vagas limitadas</small>
               )}
               
