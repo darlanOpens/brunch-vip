@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const inputSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email().optional(),
+  telefone: z.string().optional(),
   form_title: z.string().optional(),
   form_id: z.string().optional(),
   utm_source: z.string().optional(),
@@ -11,6 +12,9 @@ const inputSchema = z.object({
   utm_term: z.string().optional(),
   utm_content: z.string().optional(),
   referrer_url: z.string().optional(),
+}).refine(data => data.email || data.telefone, {
+  message: "Email ou telefone é obrigatório",
+  path: ["email", "telefone"]
 })
 
 const webhookResponseSchema = z.object({
