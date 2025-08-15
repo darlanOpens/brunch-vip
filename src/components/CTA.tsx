@@ -31,9 +31,13 @@ export default function CTA() {
     
     try {
       const payload = addUTMToFormData({
-        phone: removePhoneMask(phone),
+        telefone: removePhoneMask(phone),
         form_title: "Brunch VIP",
         form_id: "Brunch VIP CTA",
+        referrer_url: "https://go.opens.com.br/brunch-vip",
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        ip: "" // IP será preenchido pelo servidor
       })
       const response = await fetch(getApiUrl('/api/lead'), {
         method: 'POST',
