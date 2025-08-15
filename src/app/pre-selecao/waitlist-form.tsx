@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { addUTMToFormData } from "@/lib/utm"
-import { getPreSelecaoEmail, getPreSelecaoWebhookUrl, clearPreSelecaoWebhookUrl } from "@/lib/client-storage"
+import { getPreSelecaoPhone, getPreSelecaoWebhookUrl, clearPreSelecaoWebhookUrl } from "@/lib/client-storage"
+import { applyPhoneMask } from "@/utils/phoneMask"
 import { toast } from "sonner"
 import { CheckCircle } from "lucide-react"
 import { GTM_EVENTS, pushToDataLayer } from "@/lib/gtm"
@@ -20,20 +21,11 @@ export default function WaitlistForm() {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    const presetEmail = getPreSelecaoEmail()
-    if (presetEmail) setEmail(presetEmail)
+    const presetPhone = getPreSelecaoPhone()
+    if (presetPhone) setTelefone(applyPhoneMask(presetPhone))
   }, [])
 
-  function onlyDigits(value: string): string { return value.replace(/\D+/g, '') }
-  function formatPhoneBr(value: string): string {
-    const digits = onlyDigits(value)
-    if (digits.length <= 10) {
-      const d = digits.padEnd(10, ' ')
-      return `(${d.slice(0,2).trim()}) ${d.slice(2,6).trim()}-${d.slice(6,10).trim()}`.replace(/[-\s]+$/, '')
-    }
-    const d = digits.padEnd(11, ' ')
-    return `(${d.slice(0,2).trim()}) ${d.slice(2,7).trim()}-${d.slice(7,11).trim()}`.replace(/[-\s]+$/, '')
-  }
+
   function ensureUrlScheme(value: string): string {
     if (!value) return value
     const trimmed = value.trim()
@@ -159,7 +151,7 @@ export default function WaitlistForm() {
         <input
           type="tel"
           value={telefone}
-          onChange={(e) => setTelefone(formatPhoneBr(e.target.value))}
+          onChange={(e) => setTelefone(applyPhoneMask(e.target.value))}
           placeholder="Telefone"
           className={inputBase}
         />

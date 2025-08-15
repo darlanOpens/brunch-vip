@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { addUTMToFormData } from "@/lib/utm";
 import { applyPhoneMask, removePhoneMask, isValidPhone } from "@/utils/phoneMask";
 import { getApiUrl } from "@/lib/url";
-import { savePreSelecaoEmail, savePreSelecaoWebhookUrl } from "@/lib/client-storage";
+import { savePreSelecaoWebhookUrl } from "@/lib/client-storage";
 
 // Para next/image, use caminhos absolutos do public sem basePath;
 // o Next adiciona o basePath automaticamente.
@@ -50,9 +50,7 @@ export default function CTA() {
           if (data?.webhook_url && typeof data.webhook_url === 'string') {
             savePreSelecaoWebhookUrl(data.webhook_url)
           }
-          if (typeof data.redirectUrl === 'string' && data.redirectUrl.includes('/pre-selecao')) {
-            savePreSelecaoEmail(removePhoneMask(phone))
-          }
+          // Phone storage removed - only waitlist-form handles local storage
         } catch {}
         window.location.href = data.redirectUrl
       } else if (response.ok && data?.ok) {
