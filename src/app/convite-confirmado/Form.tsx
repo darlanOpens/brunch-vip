@@ -54,6 +54,7 @@ const BUSINESS_MODELS = [
 
 export default function Form() {
   const [fullName, setFullName] = useState("")
+  const [email, setEmail] = useState("")
   const [linkedin, setLinkedin] = useState("")
   const [companySize, setCompanySize] = useState<string>("")
   const [sector, setSector] = useState<string>("")
@@ -76,6 +77,9 @@ export default function Form() {
     const nextErrors: Record<string, string> = {}
     if (!fullName || fullName.trim().length < 2) {
       nextErrors.fullName = 'Informe seu nome completo.'
+    }
+    if (!email || !email.includes('@')) {
+      nextErrors.email = 'Informe um email válido.'
     }
     if (linkedin) {
       const normalized = ensureUrlScheme(linkedin)
@@ -105,6 +109,7 @@ export default function Form() {
 
       const payload = addUTMToFormData({
         nomeCompleto: fullName,
+        email: email,
         linkedin: normalizedLinkedin,
         tamanhoEmpresa: companySize,
         setorAtuacao: sector,
@@ -172,6 +177,22 @@ export default function Form() {
         />
         {errors.fullName && (
           <small className="absolute -bottom-5 left-4 text-red-400">{errors.fullName}</small>
+        )}
+      </div>
+
+      {/* Email */}
+      <div className={fieldWrapper}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Seu melhor email"
+          className={inputBase}
+          required
+          aria-label="Email"
+        />
+        {errors.email && (
+          <small className="absolute -bottom-5 left-4 text-red-400">{errors.email}</small>
         )}
       </div>
 
