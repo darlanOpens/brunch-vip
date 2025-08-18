@@ -42,7 +42,7 @@ function getSpeakersFromPublic(): SpeakerData[] {
     leonardo_superti: "CEO da CustomerX",
     aline_simoes: "Especialista em Marketing Digital",
     douglas_conrad: "Empreendedor e Investidor",
-    joao_paulo: "Tech Leader e Inovador",
+    joao_paulo: "CSO da Nextar",
     veridiana_santos: "Consultora em Experiência do Cliente",
     dionara_conrad: "CEO Opens e mestre de cerimônia",
     // mantém o que já existia para quem não foi especificado
