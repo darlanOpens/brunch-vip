@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Brunch Experience - O Futuro Agora da Experiência do Cliente",
     description: "Um encontro exclusivo para líderes durante o Startup Summit 2025. 28 de agosto, 09h-12h no Blackpot Floripa.",
-    type: "event",
+    type: "website",
     url: "/brunch-vip",
     siteName: "Opens",
     locale: "pt_BR",
@@ -151,6 +151,21 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/* Fallback de conteúdo para crawlers que não executam JavaScript */}
+        <noscript>
+          <div style={{padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.6'}}>
+            <h1>Brunch Experience - O Futuro Agora da Experiência do Cliente</h1>
+            <p><strong>Data:</strong> 28 de agosto de 2025</p>
+            <p><strong>Horário:</strong> 09h – 12h</p>
+            <p><strong>Local:</strong> Blackpot Floripa, Florianópolis, SC</p>
+            <p><strong>Descrição:</strong> Um encontro exclusivo para líderes durante o Startup Summit 2025.</p>
+            <p><strong>Características:</strong> Evento VIP, vagas limitadas, apenas por convite</p>
+            <p><strong>Palestrantes:</strong> David Ledson, Bento Meirelles, Marcela Zaidem, Leonardo Superti, Dionara Conrad e outros</p>
+            <p><strong>Organização:</strong> Opens</p>
+            <p><strong>Website:</strong> https://go.opens.com.br/brunch-vip</p>
+            <p><strong>Informações completas:</strong> <a href="/brunch-vip/brunch-vip.txt">Versão texto</a> | <a href="/brunch-vip/brunch-vip.json">Dados estruturados</a></p>
+          </div>
+        </noscript>
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <noscript>
             {/* Fallback noscript do GTM */}
@@ -162,6 +177,43 @@ export default function RootLayout({
             />
           </noscript>
         )}
+        
+        {/* Conteúdo crítico para SEO - renderizado no servidor */}
+        <div style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: '-9999px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }}>
+          <h1>Brunch Experience - O Futuro Agora da Experiência do Cliente</h1>
+          <p>Um encontro exclusivo para líderes durante o Startup Summit 2025</p>
+          <div>
+            <p>Data: 28 de agosto de 2025</p>
+            <p>Horário: 09h às 12h</p>
+            <p>Local: Blackpot Floripa, Florianópolis - SC</p>
+          </div>
+          <div>
+            <h2>Palestrantes Confirmados:</h2>
+            <p>David Ledson - Ex-sócio de Sympla, iFood, Sólides | Fundador GarantiaBR</p>
+            <p>Bento Meirelles - Founder da Minimal</p>
+            <p>Douglas Conrad - Empreendedor e Investidor</p>
+            <p>Guilherme Ferreira - CEO da Atomsix</p>
+            <p>Marcela Zaidem - Fundadora CNP | Ex-G4 Educação</p>
+            <p>Dionara Conrad - CEO Opens e mestre de cerimônia</p>
+            <p>João Paulo - CSO da Nextar</p>
+            <p>Aline Simões - Especialista em Marketing Digital</p>
+            <p>Leonardo Superti - CEO da CustomerX</p>
+            <p>Veridiana Santos - Consultora em Experiência do Cliente</p>
+          </div>
+          <div>
+            <h2>Sobre o Evento:</h2>
+            <p>Este não é um evento para todos. É uma experiência exclusiva, pensada para líderes que entendem que o futuro dos negócios está na experiência do cliente.</p>
+            <p>Vagas limitadas. Apenas por convite.</p>
+          </div>
+        </div>
+        
         <Suspense fallback={null}>
           <GTMProvider>
             {children}
