@@ -152,11 +152,15 @@ export default function WaitlistForm() {
           type="tel"
           value={telefone}
           onChange={(e) => setTelefone(applyPhoneMask(e.target.value))}
-          placeholder="Telefone"
-          className={inputBase}
+          placeholder="Telefone (já informado anteriormente)"
+          className={`${inputBase} ${telefone ? 'text-white/80' : ''}`}
+          readOnly={!!telefone}
         />
         {errors.telefone && (
           <small className="absolute -bottom-5 left-4 text-red-400">{errors.telefone}</small>
+        )}
+        {telefone && (
+          <small className="absolute -bottom-5 left-4 text-green-400">✓ Telefone já informado</small>
         )}
       </div>
       <div className={fieldWrapper}>

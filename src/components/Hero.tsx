@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { addUTMToFormData } from "@/lib/utm";
-import { savePreSelecaoWebhookUrl } from "@/lib/client-storage";
+import { savePreSelecaoWebhookUrl, savePreSelecaoPhone } from "@/lib/client-storage";
 import { getApiUrl } from "@/lib/url";
 import { ArrowDown, Calendar, Clock, MapPin } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -69,7 +69,8 @@ export default function Hero() {
           if (data?.webhook_url && typeof data.webhook_url === 'string') {
             savePreSelecaoWebhookUrl(data.webhook_url);
           }
-          // Phone storage removed - only waitlist-form handles local storage
+          // Salva o telefone para reutilização no formulário de pré-seleção
+          savePreSelecaoPhone(removePhoneMask(phone));
         } catch {}
         window.location.href = data.redirectUrl;
       } else if (response.ok && data?.ok) {
